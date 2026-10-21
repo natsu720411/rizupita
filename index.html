@@ -99,7 +99,15 @@
           <section class="result-card" id="result-card" hidden aria-labelledby="result-title">
             <div class="result-top"><div><span class="mini-label">YOUR RESULT</span><h3 id="result-title">診断結果</h3></div><span class="result-confetti" aria-hidden="true">✦ ♪ ✦</span></div>
             <div class="result-score-row"><div class="score-bubble"><strong id="result-score">0</strong><span>/ 100 点</span></div><div class="result-desc"><div id="result-rank" class="rank-title">リズム上手！</div><p id="result-message">すばらしいリズム感！</p><p class="best-label" id="best-label">自己ベストに挑戦しよう</p><p class="achievement-message" id="achievement-message" aria-live="polite"></p></div></div>
-            <div class="result-metrics"><div><small>平均タイミング誤差</small><strong id="metric-error">— <em>ms</em></strong></div><div><small>早め・遅めの傾向</small><strong id="metric-bias">—</strong></div><div><small>ヒット数</small><strong id="metric-hit">— <em>/16</em></strong></div></div>
+            <div class="result-metrics"><div><small>平均ズレの大きさ（絶対値）</small><strong id="metric-error">— <em>ms</em></strong></div><div><small>早め・遅めの傾向</small><strong id="metric-bias">—</strong></div><div><small>ヒット数</small><strong id="metric-hit">— <em>/16</em></strong></div></div>
+            <div class="instant-meter result-average-meter" id="result-average-meter" role="group" aria-label="平均タップタイミングの傾向">
+              <div class="instant-meter-heading"><span>平均タイミングの偏り</span><strong class="instant-meter-reading" data-meter-reading aria-live="polite" aria-atomic="true">結果がここに表示されます</strong></div>
+              <div class="instant-meter-labels" aria-hidden="true"><span>早い</span><span>ぴったり</span><span>遅い</span></div>
+              <div class="instant-meter-track" aria-hidden="true"><span class="instant-meter-zero"></span><span class="instant-meter-needle" data-meter-needle></span></div>
+              <div class="instant-meter-scale" aria-hidden="true"><span data-meter-minus>−230 ms</span><span>0 ms</span><span data-meter-plus>＋230 ms</span></div>
+              <p class="result-average-note" id="result-average-note">有効なタップの平均的なズレを表示します。</p>
+              <p class="result-average-help">針は「早い・遅いの平均」の位置です。早いタップと遅いタップは打ち消し合うため、ズレの大きさは上の「平均ズレ」で確認してください。</p>
+            </div>
             <div class="chart-section"><div class="chart-head"><h4>タップのタイミング</h4><span>中心がピッタリ</span></div><div class="timing-chart" id="timing-chart" role="img" aria-label="各拍の早い・遅いを表すグラフ"></div><div class="chart-scale"><span>早い</span><span>ピッタリ</span><span>遅い</span></div></div>
             <div class="result-actions"><button class="button button-secondary" id="save-result-image" type="button">結果画像を保存 ↓</button><button class="button button-secondary" id="share-result-image" type="button">結果画像を共有 ↗</button><button class="button button-primary" id="share-button" type="button">結果をシェア <span aria-hidden="true">↗</span></button><a class="button button-outline" id="share-x" href="https://x.com/intent/tweet" target="_blank" rel="noopener noreferrer">Xに投稿 <span aria-hidden="true">↗</span></a><button class="button button-secondary" id="retry-button" type="button">もう一度 ↺</button></div>
             <p class="result-disclaimer">※ 点数はゲーム用の参考値です。端末・ブラウザ・イヤホンによる音声や入力の遅延が結果に影響します。同じ環境での自己ベスト更新をおすすめします。</p>

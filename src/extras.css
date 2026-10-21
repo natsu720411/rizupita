@@ -116,3 +116,11 @@
 .instant-meter-scale{font-size:10px;color:#898fa5;margin-top:9px;font-variant-numeric:tabular-nums}
 @media(max-width:540px){.instant-meter{padding:12px 13px 10px;margin:10px auto 16px}.instant-meter-heading{align-items:flex-start;flex-wrap:wrap;gap:2px 9px}.instant-meter-reading{flex:1 1 180px;font-size:13px}}
 @media(prefers-reduced-motion:reduce){.instant-meter-needle{transition:none}}
+
+/* Summary meter: directional mean and separate mean absolute error */
+.result-average-meter{width:100%;max-width:none;margin:20px 0 24px;padding:19px 22px;border:1px solid #e0dff5;background:linear-gradient(145deg,#f8f7ff,#f6f9ff)}
+.result-average-meter .instant-meter-heading>span{font-size:15px;color:#30345d}
+.result-average-meter .instant-meter-reading{font-size:16px}
+.result-average-note{margin:17px 0 4px;font-size:15px;font-weight:800;color:#30345d}
+.result-average-help{margin:6px 0 0;font-size:12px;line-height:1.85;color:#717994}
+@media(max-width:540px){.result-average-meter{padding:15px 13px;margin:16px 0 20px}.result-average-meter .instant-meter-heading>span{font-size:14px}.result-average-meter .instant-meter-reading{font-size:14px}.result-average-note{font-size:13px}}

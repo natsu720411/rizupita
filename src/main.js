@@ -11,6 +11,7 @@ const startButton = $('start-button');
 const resetButton = $('reset-button');
 const tapPad = $('tap-pad');
 const diagnosisMeter=createInstantMeter('diagnosis-meter');
+const resultAverageMeter=createInstantMeter('result-average-meter');
 const STORAGE_KEY = 'rizupita-results-v1';
 const TOTAL_BEATS = 16;
 const COUNT_IN = 4;
@@ -79,6 +80,7 @@ function resetInterface() {
   $('tap-feedback').textContent='スタートを押すと音が鳴ります';
   $('tempo-indicator').textContent=`${bpm} BPM`;
   diagnosisMeter.reset(bpm);
+  resultAverageMeter.reset(bpm);
   $('result-card').hidden=true;
   $('result-card').classList.remove('is-celebrating');
   clearProgress();
@@ -294,6 +296,8 @@ function renderResult(result,previousBest) {
   const bias=result.meanSigned===null?'測定なし':result.meanSigned>15?'遅め':result.meanSigned < -15?'早め':'ほぼピッタリ';
   $('metric-bias').textContent=bias;
   $('metric-hit').innerHTML=`${result.hits} <em>/16</em>`;
+  const averageReading=resultAverageMeter.showAverage(result.meanSigned,result.meanAbs,result.bpm);
+  $('result-average-note').textContent=averageReading.note;
   const container=$('timing-chart');
   container.replaceChildren();
   result.errors.forEach((error,i)=>{
