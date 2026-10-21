@@ -86,7 +86,7 @@ function playTone(ctx,at,pitch,volume,nodes,duration=.075){
   osc.frequency.setValueAtTime(pitch,at);
   osc.frequency.exponentialRampToValueAtTime(pitch*.68,at+duration);
   gain.gain.setValueAtTime(.0001,at);
-  gain.gain.exponentialRampToValueAtTime(volume,at+.003);
+  gain.gain.exponentialRampToValueAtTime(Math.max(.0001,volume*(window.rizupitaGetVolume?.()??.7)),at+.003);
   gain.gain.exponentialRampToValueAtTime(.0001,at+duration);
   osc.connect(gain);gain.connect(ctx.destination);
   osc.start(at);osc.stop(at+duration+.02);
@@ -204,6 +204,7 @@ function tapMode(event){
   }
   best.hit=diff*1000;
   modeMeter.update(best.hit,state.bpm);
+  window.rizupitaTapFeedback?.();
   modeTap.classList.remove('is-hit');void modeTap.offsetWidth;modeTap.classList.add('is-hit');
   byId('mode-result').textContent=Math.abs(diff)<.045?'ピタッ！ ✨':(diff>0?'少し遅め！':'少し早め！');
 }
@@ -230,6 +231,7 @@ function finishMode(){
   latestModeResult={mode:result.mode,bpm:result.bpm,score};
   byId('mode-share').hidden=false;
   updateModeBest();
+  window.dispatchEvent(new CustomEvent('rizupita:mode-result',{detail:{mode:result.mode,bpm:result.bpm,score}}));
   window.dispatchEvent(new CustomEvent('rizupita:analytics',{detail:{name:'mode_complete',params:{mode:result.mode,tempo:result.bpm,score}}}));
 }
 modeStart.addEventListener('click',beginMode);
@@ -285,19 +287,37 @@ function createImage(){
   if(!latest)return null;
   const canvas=document.createElement('canvas');canvas.width=1200;canvas.height=630;
   const ctx=canvas.getContext('2d');if(!ctx)return null;
+  const result=latest.result;
   const bg=ctx.createLinearGradient(0,0,1200,630);
-  bg.addColorStop(0,'#151936');bg.addColorStop(1,'#38316b');
+  bg.addColorStop(0,'#181f49');bg.addColorStop(.55,'#302c67');bg.addColorStop(1,'#49407b');
   ctx.fillStyle=bg;ctx.fillRect(0,0,1200,630);
-  ctx.strokeStyle='rgba(252,170,141,.14)';ctx.lineWidth=30;
-  for(let i=0;i<7;i++){ctx.beginPath();ctx.arc(980,250,135+i*70,0,Math.PI*2);ctx.stroke();}
-  ctx.fillStyle='rgba(255,255,255,.10)';roundRect(ctx,60,60,1080,510,36);ctx.fill();
-  ctx.textBaseline='alphabetic';ctx.fillStyle='#ffae88';ctx.font='bold 45px sans-serif';ctx.fillText('♪  リズピタ',108,145);
-  ctx.fillStyle='#ffffff';ctx.font='bold 37px sans-serif';ctx.fillText('あなたのリズム感は…',108,230);
-  ctx.fillStyle='#ffffff';ctx.font='bold 185px sans-serif';ctx.fillText(String(latest.result.score),107,440);
-  ctx.font='bold 43px sans-serif';ctx.fillStyle='#d2cfff';ctx.fillText('/ 100 点',370,425);
-  ctx.font='bold 43px sans-serif';ctx.fillStyle='#ffae88';ctx.fillText(latest.rank,108,512);
-  ctx.textAlign='right';ctx.font='bold 32px sans-serif';ctx.fillStyle='#ffffff';ctx.fillText(String(latest.result.bpm)+' BPM  /  16 BEATS',1070,480);
-  ctx.font='27px sans-serif';ctx.fillStyle='#d8d6f5';ctx.fillText('無料リズム感診断  #リズピタ',1070,528);
+  ctx.strokeStyle='#ffffff18';ctx.lineWidth=26;
+  for(let i=0;i<6;i++){ctx.beginPath();ctx.arc(1080,80,85+i*75,0,Math.PI*2);ctx.stroke();}
+  ctx.fillStyle='#ffb38e';ctx.font='bold 42px sans-serif';ctx.fillText('♪ リズピタ',78,112);
+  ctx.fillStyle='#ecebff';ctx.font='bold 35px sans-serif';ctx.fillText('あなたのリズム感は…',78,206);
+  ctx.fillStyle='#fff';ctx.font='bold 165px sans-serif';ctx.fillText(String(result.score),76,404);
+  ctx.fillStyle='#d5d0ff';ctx.font='bold 43px sans-serif';ctx.fillText('/ 100点',350,391);
+  ctx.fillStyle='#ffbb9c';ctx.font='bold 32px sans-serif';ctx.fillText(latest.rank,80,471);
+  ctx.fillStyle='#e2dcff';ctx.font='bold 26px sans-serif';ctx.fillText(result.bpm+' BPM・16拍',82,517);
+  ctx.fillStyle='#ffffff1a';roundRect(ctx,631,155,500,382,28);ctx.fill();
+  ctx.fillStyle='#fff';ctx.font='bold 31px sans-serif';ctx.fillText('タップのタイミング分析',664,215);
+  const hasData=Number.isFinite(result.meanSigned)&&Number.isFinite(result.meanAbs);
+  const signed=hasData?Math.round(Math.abs(result.meanSigned)):null;
+  const direction=!hasData?'記録なし':signed===0?'ほぼぴったり':result.meanSigned<0?'早め':'遅め';
+  ctx.fillStyle='#ffd3bd';ctx.font='bold 29px sans-serif';ctx.fillText(hasData?'平均の偏り '+signed+' ms '+direction:'タップの記録なし',664,288);
+  ctx.fillStyle='#e6e5f8';ctx.font='bold 26px sans-serif';ctx.fillText('平均ズレ '+(hasData?Math.round(result.meanAbs)+' ms':'—'),664,340);
+  const left=667,width=426,center=left+width/2,limit=Math.min(.23,60/result.bpm*.44)*1000;
+  const gradient=ctx.createLinearGradient(left,0,left+width,0);
+  gradient.addColorStop(0,'#81baff');gradient.addColorStop(.49,'#c4ecc9');gradient.addColorStop(.51,'#c4ecc9');gradient.addColorStop(1,'#ff9fa9');
+  ctx.fillStyle=gradient;roundRect(ctx,left,385,width,23,12);ctx.fill();
+  ctx.fillStyle='#313657';ctx.fillRect(center-2,377,4,40);
+  const needlePosition=center+(hasData?Math.max(-1,Math.min(1,result.meanSigned/limit))*width*.46:0);
+  ctx.beginPath();ctx.arc(needlePosition,396.5,13,0,Math.PI*2);
+  ctx.fillStyle='#fff';ctx.fill();ctx.lineWidth=5;ctx.strokeStyle=hasData&&result.meanSigned<-.5?'#4387df':hasData&&result.meanSigned>.5?'#ea7186':'#39a16d';ctx.stroke();
+  ctx.font='bold 18px sans-serif';ctx.fillStyle='#e8e5fb';ctx.fillText('早い',left,445);ctx.fillText('0 ms',center-22,445);ctx.fillText('遅い',left+width-48,445);
+  ctx.font='22px sans-serif';ctx.fillStyle='#d5cff3';ctx.fillText('同じテンポで自己ベストに挑戦！',665,498);
+  ctx.fillStyle='#f6f2ff';ctx.font='bold 26px sans-serif';ctx.fillText('rizupita.vercel.app',80,589);
+  ctx.textAlign='right';ctx.font='22px sans-serif';ctx.fillStyle='#e2dafa';ctx.fillText('#リズピタ #リズム感診断',1125,588);
   return canvas;
 }
 function imageBlob(canvas){

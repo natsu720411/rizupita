@@ -1,6 +1,7 @@
 import './style.css';
 import './extras.js';
 import './analytics.js';
+import './engagement.js';
 import {nearestBeatIndex,scoreBeats,rankResults,normalizeInputTimeStamp} from './rhythm-core.js';
 import {createInstantMeter} from './timing-meter.js';
 
@@ -118,7 +119,7 @@ function scheduleBeat(ctx, time, isCount, accent, gameState) {
   oscillator.frequency.setValueAtTime(accent ? 1180 : (isCount?880:650),time);
   oscillator.frequency.exponentialRampToValueAtTime(accent?650:400,end);
   envelope.gain.setValueAtTime(0,time);
-  envelope.gain.linearRampToValueAtTime(accent?.25:.18,time+.003);
+  envelope.gain.linearRampToValueAtTime(Math.max(.0001,(accent?.25:.18)*(window.rizupitaGetVolume?.()??.7)),time+.003);
   envelope.gain.exponentialRampToValueAtTime(.0001,end);
   oscillator.connect(envelope);
   envelope.connect(ctx.destination);
@@ -136,7 +137,7 @@ function eventToAudioTime(ctx,event) {
   }
   return ctx.currentTime+(eventTime-performance.now())/1000;
 }
-async function startGame() {
+async function startGame({daily=null}={}) {
   resetInterface();
   window.dispatchEvent(new CustomEvent('rizupita:begin',{detail:{source:'diagnosis'}}));
   const token=runToken;
@@ -153,7 +154,7 @@ async function startGame() {
     const ctx=audioContext;
     const interval=60/bpm;
     const startAt=ctx.currentTime+.25;
-    const state={ctx,bpm,interval,startAt,firstBeat:startAt+COUNT_IN*interval,taps:Array(TOTAL_BEATS).fill(null),extra:0,oscillators:[],lastDisplay:-99};
+    const state={ctx,bpm,interval,startAt,firstBeat:startAt+COUNT_IN*interval,taps:Array(TOTAL_BEATS).fill(null),extra:0,oscillators:[],lastDisplay:-99,daily};
     game=state;
     for(let i=0;i<COUNT_IN+TOTAL_BEATS;i++) scheduleBeat(ctx,startAt+i*interval,i<COUNT_IN,i%4===0,state);
     buttons.forEach(button=>button.disabled=true);
@@ -228,6 +229,7 @@ function hitBeat(event) {
   }
   game.taps[index]=errorMs;
   diagnosisMeter.update(errorMs,game.bpm);
+  window.rizupitaTapFeedback?.();
   tapPad.classList.remove('is-tapped');
   void tapPad.offsetWidth;
   tapPad.classList.add('is-tapped');
@@ -267,7 +269,7 @@ function finishGame() {
   $('tap-feedback').textContent='今回のリズムはどうだったかな？';
   game=null;
   renderResult(result,previousBest);
-  window.dispatchEvent(new CustomEvent("rizupita:result",{detail:{result,rank:tierFor(result.score)[0]}}));
+  window.dispatchEvent(new CustomEvent("rizupita:result",{detail:{result,rank:tierFor(result.score)[0],daily:current.daily}}));
   window.dispatchEvent(new CustomEvent("rizupita:analytics",{detail:{name:"diagnosis_complete",params:{tempo:result.bpm,score:result.score}}}));
   selectedRankingTempo=result.bpm;
   renderLeaderboard();
@@ -402,6 +404,13 @@ document.addEventListener('visibilitychange',()=>{
   }
 });
 
+window.addEventListener('rizupita:daily-start',event=>{
+  const challenge=event.detail;
+  if(!challenge||![80,110,140].includes(challenge.bpm)||!Number.isFinite(challenge.target))return;
+  resetInterface();
+  setDifficulty(challenge.bpm);
+  startGame({daily:{day:challenge.day,target:challenge.target}});
+});
 startButton.addEventListener('click',startGame);
 resetButton.addEventListener('click',resetInterface);
 $('retry-button').addEventListener('click',()=>{

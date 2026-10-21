@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#151934" />
-  <meta name="description" content="リズピタは無料で遊べるリズム感診断・リズム練習サイト。16回タップで100点満点のスコアとタイミングのズレを測定。裏拍・無音テンポ・リズム記憶ゲーム、自己ランキングにも挑戦。登録不要・スマホ対応。" />
+  <meta name="description" content="無料のリズム感診断・リズム感テストならリズピタ。タップのズレをmsで表示。毎日変わるリズムチャレンジ、成長グラフ、レベル・称号、3種類のリズムゲームも無料・登録不要・スマホ対応。" />
   <meta name="keywords" content="リズム感診断,リズム感テスト,リズム感,無料,音楽,リズムゲーム,リズピタ" />
   <link rel="canonical" href="https://rizupita.vercel.app/" />
   <meta name="robots" content="index,follow,max-image-preview:large" />
@@ -13,7 +13,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="ja_JP" />
   <meta property="og:title" content="リズピタ｜タップするだけの無料リズム感診断" />
-  <meta property="og:description" content="16回タップでリズム感を採点。3種類のリズムゲーム・メトロノーム練習・自己ランキングも無料！" />
+  <meta property="og:description" content="リズム感診断・日替わりチャレンジ・成長グラフ。無料で16拍タップして得点とタイミングのズレを確認！" />
   <meta property="og:image" content="https://rizupita.vercel.app/og.svg" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="リズピタ｜無料リズム感診断" />
@@ -30,7 +30,7 @@
     <header class="site-header">
       <div class="container nav-inner">
         <a class="brand" href="#top" aria-label="リズピタ トップへ"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 40 40" fill="none"><path d="M6 22h6l4-10 6 18 5-13 3 5h4" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>リズピタ<span class="brand-dot">.</span></span></a>
-        <nav aria-label="メインメニュー"><a href="#diagnosis">診断する</a><a href="#modes">練習・ゲーム</a><a href="#leaderboard">自己ランキング</a><a href="#features">リズピタとは</a><a href="#faq">よくある質問</a></nav>
+        <nav aria-label="メインメニュー"><a href="#diagnosis">診断する</a><a href="#modes">練習・ゲーム</a><a href="#daily">今日の挑戦</a><a href="#growth">成長グラフ</a><a href="#leaderboard">自己ランキング</a><a href="#features">リズピタとは</a><a href="#faq">よくある質問</a></nav>
         <a class="nav-cta" href="#modes">新ゲームはこちら <span aria-hidden="true">↗</span></a>
       </div>
     </header>
@@ -58,11 +58,28 @@
         </div>
       </section>
 
+<section class="daily-section container" id="daily" aria-labelledby="daily-title">
+  <div class="daily-card">
+    <div class="daily-content"><span class="daily-kicker">DAILY RHYTHM CHALLENGE</span><h2 id="daily-title">今日のリズムチャレンジ</h2><p id="daily-description">今日のお題を準備しています…</p><a class="daily-guide-link" href="/guide/daily.html">日替わりチャレンジの遊び方 ↗</a>
+    <div class="daily-badges"><span id="daily-date"></span><span id="daily-bpm"></span><span id="daily-target"></span></div>
+    <p class="daily-progress" id="daily-progress" aria-live="polite">毎日挑戦してみよう！</p></div>
+    <button class="button button-primary daily-start" id="daily-start" type="button">今日のチャレンジを始める ↗</button>
+  </div>
+</section>
+<section class="level-section container" id="level" aria-labelledby="level-title">
+  <div class="level-card"><div class="level-header"><div><span class="mini-label">YOUR RHYTHM LEVEL</span><h2 id="level-title">レベル <span id="level-number">1</span> <span id="level-rank">はじめてのリズム</span></h2><p id="level-message">ゲームをプレイすると経験値がたまります。</p></div><span id="level-xp" class="level-xp">0 XP</span></div>
+  <div class="level-bar" role="progressbar" id="level-progress" aria-label="次のレベルまでの経験値" aria-valuemin="0" aria-valuemax="250" aria-valuenow="0"><div id="level-bar-fill"></div></div>
+  <p class="level-footer"><span id="level-to-next">次のレベルまで250 XP</span><span id="daily-streak">連続達成 0 日</span></p></div>
+</section>
       <section class="diagnosis-section" id="diagnosis" aria-labelledby="diagnosis-title">
         <div class="container diagnosis-container">
           <div class="section-head"><div class="section-kicker">LET'S PLAY</div><h2 id="diagnosis-title">リズム感を測ってみよう！</h2><p>難易度を選んで、音のタイミングに合わせてタップするだけ。</p></div>
           <div class="game-card">
-            <div class="game-topline"><span class="mini-label">01 / DIFFICULTY</span><span class="game-top-note">音量をオンにして遊んでね <span aria-hidden="true">♪</span></span></div>
+            <div class="sound-settings" aria-label="音量とタップ設定">
+  <label for="game-volume"><span><span aria-hidden="true">♪</span> 音量</span><output for="game-volume" id="game-volume-text">70%</output></label>
+  <input id="game-volume" type="range" min="0" max="100" step="5" value="70" aria-label="ゲームの音量" />
+  <label class="haptic-toggle" for="game-haptic"><input type="checkbox" id="game-haptic" /><span>タップ時に振動（対応機種のみ）</span></label>
+</div><div class="game-topline"><span class="mini-label">01 / DIFFICULTY</span><span class="game-top-note">音量をオンにして遊んでね <span aria-hidden="true">♪</span></span></div>
             <div class="difficulty-row" role="group" aria-label="難易度">
               <button class="difficulty" data-bpm="80" type="button"><span class="difficulty-name">ゆったり</span><small>80 BPM</small></button>
               <button class="difficulty is-selected" data-bpm="110" type="button" aria-pressed="true"><span class="difficulty-name">ふつう</span><small>110 BPM</small></button>
@@ -108,6 +125,12 @@
               <p class="result-average-note" id="result-average-note">有効なタップの平均的なズレを表示します。</p>
               <p class="result-average-help">針は「早い・遅いの平均」の位置です。早いタップと遅いタップは打ち消し合うため、ズレの大きさは上の「平均ズレ」で確認してください。</p>
             </div>
+            <section class="insight-card" aria-labelledby="insight-title">
+  <span class="mini-label">PERSONAL INSIGHT</span>
+  <h4 id="insight-title">タップの傾向を分析</h4>
+  <p id="insight-message">診断後にアドバイスが表示されます。</p>
+  <div class="insight-details"><span id="insight-early">前半：—</span><span id="insight-late">後半：—</span></div>
+</section>
             <div class="chart-section"><div class="chart-head"><h4>タップのタイミング</h4><span>中心がピッタリ</span></div><div class="timing-chart" id="timing-chart" role="img" aria-label="各拍の早い・遅いを表すグラフ"></div><div class="chart-scale"><span>早い</span><span>ピッタリ</span><span>遅い</span></div></div>
             <div class="result-actions"><button class="button button-secondary" id="save-result-image" type="button">結果画像を保存 ↓</button><button class="button button-secondary" id="share-result-image" type="button">結果画像を共有 ↗</button><button class="button button-primary" id="share-button" type="button">結果をシェア <span aria-hidden="true">↗</span></button><a class="button button-outline" id="share-x" href="https://x.com/intent/tweet" target="_blank" rel="noopener noreferrer">Xに投稿 <span aria-hidden="true">↗</span></a><button class="button button-secondary" id="retry-button" type="button">もう一度 ↺</button></div>
             <p class="result-disclaimer">※ 点数はゲーム用の参考値です。端末・ブラウザ・イヤホンによる音声や入力の遅延が結果に影響します。同じ環境での自己ベスト更新をおすすめします。</p>
@@ -122,7 +145,15 @@
             <ol id="leaderboard-list" class="leaderboard-list"><li class="leaderboard-empty">診断するとランキングが表示されます。</li></ol>
             <p class="leaderboard-note">最近の最大60件を端末内に保存。これまでの記録も引き続き利用できます。ブラウザのデータを消すと記録も消えます。</p>
           </section>
-          <div class="history-card" id="history-card"><div class="history-head"><h3>あなたの記録 <span>✦</span></h3><span>この端末に保存</span></div><div id="history-list" class="history-list"><p class="history-empty">最初の診断結果がここに表示されます。</p></div></div>
+<section class="growth-card" id="growth" aria-labelledby="growth-title">
+  <div class="growth-heading"><div><span class="mini-label">RHYTHM JOURNEY</span><h3 id="growth-title">あなたの成長グラフ</h3><p>過去の診断結果をもとに、点数やズレの変化を表示します。</p></div></div>
+  <div class="growth-selectors">
+    <div role="group" aria-label="成長グラフのテンポ" class="growth-tempos"><button type="button" data-growth-bpm="80">80 BPM</button><button type="button" data-growth-bpm="110" class="is-active" aria-pressed="true">110 BPM</button><button type="button" data-growth-bpm="140">140 BPM</button></div>
+    <div role="group" aria-label="成長グラフの項目" class="growth-metrics"><button type="button" data-growth-metric="score" class="is-active" aria-pressed="true">スコア</button><button type="button" data-growth-metric="error">平均ズレ</button></div>
+  </div>
+  <div class="growth-plot" id="growth-plot"><p>診断を2回以上行うとグラフが表示されます。</p></div>
+  <p id="growth-summary" class="growth-summary" aria-live="polite">同じBPMで続けて診断してみましょう。</p>
+</section>          <div class="history-card" id="history-card"><div class="history-head"><h3>あなたの記録 <span>✦</span></h3><span>この端末に保存</span></div><div id="history-list" class="history-list"><p class="history-empty">最初の診断結果がここに表示されます。</p></div></div>
         </div>
       </section>
 
@@ -171,7 +202,7 @@
  <div class="related-card"><div><div class="section-kicker">MORE MUSIC TOOLS</div><h2 id="related-title">自分の「声の音域」も測ってみよう。</h2><p>姉妹サイト「キミキー」なら、マイクで声の高さ・音域を測定して、歌いやすい曲探しにも挑戦できます。</p></div><a class="button button-primary" href="https://kimikey-app.vercel.app/" target="_blank" rel="noopener noreferrer">キミキーを開く ↗</a></div>
 </section>
 
-      <section class="faq-section container" id="faq"><div class="section-head"><div class="section-kicker">FAQ</div><h2>よくある質問</h2></div><div class="faq-list"><details><summary>練習モードや追加ゲームも無料ですか？</summary><p>はい。メトロノーム練習・裏拍チャレンジ・無音テンポキープ・リズム記憶も登録なしで無料です。</p></details><details><summary>測定がいつも遅めになるのはなぜ？</summary><p>音声出力・画面のタップ認識には機種差があります。タイミング補正を使って設定を調整できますが、正確な遅延を自動計測するものではありません。</p></details><details><summary>リズピタは本当に無料ですか？</summary><p>はい。すべての診断機能を無料で使えます。会員登録やアプリのインストールも不要です。</p></details><details><summary>リズム感はどうやって採点していますか？</summary><p>メトロノームの拍とタップのタイミングの差をもとに、全16拍のスコアを計算しています。ミスした拍は0点として扱います。音声・入力の遅延に左右されるため、結果はゲーム用の参考値です。</p></details><details><summary>イヤホンでも遊べますか？</summary><p>遊べます。ただしBluetoothイヤホンなどでは音が届くまでの遅延が大きくなる場合があります。できるだけ本体スピーカーで、同じ環境で比較することをおすすめします。</p></details><details><summary>ランキングは全国共通ですか？</summary><p>現在はこの端末だけの個人ランキングです。会員登録・サーバー送信なしで無料で使えます。</p></details><details><summary>結果は保存されますか？</summary><p>最近の最大60件の結果と自己ベストは、利用中のブラウザのローカルストレージに保存されます。サーバーへ送信しないため、別の端末やブラウザには引き継がれません。ブラウザのデータを消すと記録も消えます。</p></details></div></section>
+      <section class="faq-section container" id="faq"><div class="section-head"><div class="section-kicker">FAQ</div><h2>よくある質問</h2></div><div class="faq-list"><details><summary>練習モードや追加ゲームも無料ですか？</summary><p>はい。メトロノーム練習・裏拍チャレンジ・無音テンポキープ・リズム記憶も登録なしで無料です。</p></details><details><summary>測定がいつも遅めになるのはなぜ？</summary><p>音声出力・画面のタップ認識には機種差があります。タイミング補正を使って設定を調整できますが、正確な遅延を自動計測するものではありません。</p></details><details><summary>リズピタは本当に無料ですか？</summary><p>はい。すべての診断機能を無料で使えます。会員登録やアプリのインストールも不要です。</p></details><details><summary>リズム感はどうやって採点していますか？</summary><p>メトロノームの拍とタップのタイミングの差をもとに、全16拍のスコアを計算しています。ミスした拍は0点として扱います。音声・入力の遅延に左右されるため、結果はゲーム用の参考値です。</p></details><details><summary>タップしたときの音量や振動を変えられますか？</summary><p>ゲームの音量はスライダーで調整できます。対応する端末ではタップ時の振動も選べますが、音やタップには機種ごとの遅延があります。</p></details><details><summary>イヤホンでも遊べますか？</summary><p>遊べます。ただしBluetoothイヤホンなどでは音が届くまでの遅延が大きくなる場合があります。できるだけ本体スピーカーで、同じ環境で比較することをおすすめします。</p></details><details><summary>毎日のチャレンジやレベルは無料ですか？</summary><p>はい。日替わりチャレンジ、レベル、成長グラフはすべて無料です。データは利用中のブラウザ内に保存されます。</p></details><details><summary>ランキングは全国共通ですか？</summary><p>現在はこの端末だけの個人ランキングです。会員登録・サーバー送信なしで無料で使えます。</p></details><details><summary>結果は保存されますか？</summary><p>最近の最大60件の結果と自己ベストは、利用中のブラウザのローカルストレージに保存されます。サーバーへ送信しないため、別の端末やブラウザには引き継がれません。ブラウザのデータを消すと記録も消えます。</p></details></div></section>
       <section class="closing-section container"><div class="closing-box"><span class="closing-sparkle">✦</span><h2>さあ、ビートにのってみよう。</h2><p>あなたの「ピタッ！」を見つけにいこう。</p><a href="#diagnosis" class="button button-white">無料でリズム感を診断する ↗</a></div></section>
     </main>
     <footer class="site-footer"><div class="container footer-inner"><a class="brand brand-footer" href="#top"><span class="brand-mark" aria-hidden="true">♪</span> リズピタ<span class="brand-dot">.</span></a><p>リズムが合うと、ちょっと嬉しい。</p><a href="/privacy.html" class="footer-privacy">データの取り扱い</a><small>© 2026 リズピタ / 無料リズム感診断</small></div></footer>
