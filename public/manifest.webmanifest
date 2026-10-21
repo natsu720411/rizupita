@@ -1,0 +1,19 @@
+{
+  "name": "リズピタ｜リズム感診断",
+  "short_name": "リズピタ",
+  "description": "無料のリズム感診断・リズム練習ゲーム",
+  "lang": "ja",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#fffefa",
+  "theme_color": "#151934",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

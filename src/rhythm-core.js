@@ -24,3 +24,9 @@ export function rankResults(history,bpm,limit=5) {
     .sort((a,b)=>b.score-a.score || (Number.isFinite(a.meanAbs)?a.meanAbs:Infinity)-(Number.isFinite(b.meanAbs)?b.meanAbs:Infinity) || (b.time||0)-(a.time||0))
     .slice(0,Math.max(0,limit));
 }
+
+/** Convert legacy epoch-based or performance-relative UI timestamps to performance.now() units. */
+export function normalizeInputTimeStamp(timestamp,now,timeOrigin){
+  if(!Number.isFinite(timestamp) || timestamp<=0)return now;
+  return timestamp>1e12 ? timestamp-timeOrigin : timestamp;
+}

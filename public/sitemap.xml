@@ -1,2 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://rizupita.vercel.app/</loc></url></urlset>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://rizupita.vercel.app/</loc></url>
+  <url><loc>https://rizupita.vercel.app/guide/offbeat.html</loc></url>
+  <url><loc>https://rizupita.vercel.app/guide/silence.html</loc></url>
+  <url><loc>https://rizupita.vercel.app/guide/memory.html</loc></url>
+  <url><loc>https://rizupita.vercel.app/privacy.html</loc></url>
+</urlset>

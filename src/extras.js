@@ -1,6 +1,6 @@
 
 import './extras.css';
-import {scoreBeats} from './rhythm-core.js';
+import {scoreBeats,normalizeInputTimeStamp} from './rhythm-core.js';
 
 const byId=(id)=>document.getElementById(id);
 const latencyKey='rizupita-latency-ms';
@@ -32,6 +32,18 @@ const specs={
 const modeButtons=[...document.querySelectorAll('[data-mode]')];
 const modeTap=byId('mode-pad'),modeStart=byId('mode-start'),modeStop=byId('mode-stop');
 const modeTempo=byId('mode-bpm');
+let latestModeResult=null;
+function updateModeBest() {
+  const label=byId('mode-best');
+  if(mode==='practice'){label.textContent='練習モード：自分のペースで上達しよう';return;}
+  try{
+    const raw=localStorage.getItem('rizupita-mode-best-'+mode+'-'+modeTempo.value);
+    const best=raw===null?null:Number(raw);
+    label.textContent=best!==null&&Number.isFinite(best)?'自己ベスト：'+best+'点':'このゲームの最初の記録を作ろう！';
+  }catch{label.textContent='ベストスコアを表示できません';}
+}
+modeTempo.addEventListener('change',()=>{updateModeBest();});
+
 let mode='practice',state=null,context=null,rafId=0,token=0;
 const COUNT_IN=4;
 function announce(message){byId('mode-status').textContent=message;}
@@ -42,6 +54,7 @@ function stopMode(quiet=false){
   if(state?.nodes){state.nodes.forEach(node=>{try{node.stop();}catch{}});}
   state=null;modeTap.disabled=true;modeTap.classList.remove('is-hit');
   modeStart.hidden=false;modeStart.disabled=false;modeStop.hidden=true;
+  byId('mode-share').hidden=true;
   setModeButtons(false);
   if(!quiet)announce('モードを選んでスタート！');
 }
@@ -56,8 +69,11 @@ function selectMode(next){
   byId('mode-title').textContent=specs[mode].title;
   byId('mode-description').textContent=specs[mode].desc;
   byId('mode-result').textContent='';
+  byId('mode-share').hidden=true;
+  latestModeResult=null;
   byId('mode-progress').textContent='準備OK';
   announce('モードを選んでスタート！');
+  updateModeBest();
 }
 modeButtons.forEach(button=>button.addEventListener('click',()=>selectMode(button.dataset.mode)));
 function playTone(ctx,at,pitch,volume,nodes,duration=.075){
@@ -75,8 +91,9 @@ function playTone(ctx,at,pitch,volume,nodes,duration=.075){
 function getEventTime(event,ctx) {
   const stamp=typeof ctx.getOutputTimestamp==='function'?ctx.getOutputTimestamp():null;
   let value;
-  if(stamp && stamp.performanceTime>0 && stamp.contextTime>0) value=stamp.contextTime+(event.timeStamp-stamp.performanceTime)/1000;
-  else value=ctx.currentTime+(event.timeStamp-performance.now())/1000;
+  const eventTime=normalizeInputTimeStamp(event.timeStamp,performance.now(),performance.timeOrigin);
+  if(stamp && stamp.performanceTime>0 && stamp.contextTime>0) value=stamp.contextTime+(eventTime-stamp.performanceTime)/1000;
+  else value=ctx.currentTime+(eventTime-performance.now())/1000;
   return value-latencyValue()/1000;
 }
 function patternOfEight() {
@@ -86,6 +103,7 @@ function patternOfEight() {
 }
 async function beginMode(){
   stopMode(true);
+  window.dispatchEvent(new CustomEvent('rizupita:begin',{detail:{source:'mode'}}));
   const localToken=token;
   const currentMode=mode;
   const bpm=Number(modeTempo.value);
@@ -123,7 +141,7 @@ async function beginMode(){
     state={mode:currentMode,ctx:context,start,interval,bpm,targets,nodes,extra:0,end,pattern,lastProgress:''};
     modeStart.hidden=true;modeStop.hidden=false;
     setModeButtons(true);
-    modeTap.disabled=false;
+    modeTap.disabled=true;
     announce('最初の4拍を聴いてテンポをつかもう。');
     byId('mode-progress').textContent='カウント中…';
     rafId=requestAnimationFrame(frame);
@@ -138,6 +156,8 @@ function frame(){
   if(!state)return;
   const t=state.ctx.currentTime;
   if(t>=state.end){finishMode();return;}
+  const allowedAt=state.start + (state.mode==='memory'?8*state.interval:state.mode==='offbeat'?state.interval/2:0) - Math.min(.23,state.interval*.44);
+  if(t>=allowedAt&&modeTap.disabled)modeTap.disabled=false;
   let label='';
   if(t<state.start){
     label='あと '+Math.max(1,Math.ceil((state.start-t)/state.interval))+' 拍でスタート';
@@ -194,19 +214,51 @@ function finishMode(){
   announce('チャレンジ終了！');
   byId('mode-progress').textContent=specs[result.mode].help;
   byId('mode-result').textContent=message;
+  latestModeResult={mode:result.mode,bpm:result.bpm,score};
+  byId('mode-share').hidden=false;
+  updateModeBest();
   window.dispatchEvent(new CustomEvent('rizupita:analytics',{detail:{name:'mode_complete',params:{mode:result.mode,tempo:result.bpm,score}}}));
 }
 modeStart.addEventListener('click',beginMode);
 modeStop.addEventListener('click',()=>{stopMode();byId('mode-result').textContent='中止しました。もう一度挑戦できます。';});
 modeTap.addEventListener('pointerdown',event=>{event.preventDefault();tapMode(event);});
+modeTap.addEventListener('keydown',event=>{
+ if((event.code==='Space'||event.code==='Enter')&&!event.repeat){event.preventDefault();event.stopPropagation();tapMode(event);}
+});
 window.addEventListener('keydown',event=>{
-  if(event.code!=='Space'||event.repeat||!state||modeTap.disabled)return;
+  if(event.defaultPrevented||event.code!=='Space'||event.repeat||!state||modeTap.disabled)return;
   if(event.target?.closest?.('button,input,select,textarea,a'))return;
   event.preventDefault();tapMode(event);
+});
+window.addEventListener('rizupita:begin',event=>{
+  if(event.detail?.source!=='mode' && (state || modeStart.disabled))stopMode(true);
 });
 document.addEventListener('visibilitychange',()=>{
   if(document.hidden&&state){stopMode();byId('mode-result').textContent='画面を切り替えたため中止しました。';}
 });
+
+async function shareModeResult() {
+  if(!latestModeResult)return;
+  const {mode:game,bpm,score}=latestModeResult;
+  const title=specs[game].title;
+  const link=new URL('/',location.origin);
+  link.searchParams.set('game',game);
+  link.hash='modes';
+  const text=title+'で'+score+'点！ ('+bpm+' BPM) #リズピタ #リズム感テスト';
+  if(navigator.share){
+    try{await navigator.share({title:'リズピタ：'+title,text,url:link.toString()});return;}catch(error){if(error?.name==='AbortError')return;}
+  }
+  try{
+    await navigator.clipboard.writeText(text+'\n'+link.toString());
+    byId('mode-result').textContent='シェア用の文章をコピーしました ✓';
+  }catch{
+    byId('mode-result').textContent='コピーに失敗しました。ブラウザの共有機能をご利用ください。';
+  }
+}
+byId('mode-share').addEventListener('click',shareModeResult);
+const requestedMode=new URLSearchParams(location.search).get('game');
+if(requestedMode&&specs[requestedMode])selectMode(requestedMode);
+else updateModeBest();
 
 // Create a shareable PNG locally in the browser. No scores or images leave the device.
 let latest=null;

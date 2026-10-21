@@ -83,3 +83,12 @@
 .rhythm-guide-note{margin:20px 0 0}
 @media(max-width:750px){.rhythm-guide-grid{grid-template-columns:1fr}.rhythm-guide{padding:55px 0}.leaderboard-card{padding:18px}.leaderboard-heading{flex-direction:column;align-items:flex-start;gap:3px}.leaderboard-heading h3{font-size:18px}.leaderboard-entry small{font-size:10px}.leaderboard-score{font-size:20px}}
 @media(prefers-reduced-motion:reduce){.result-card.is-celebrating .score-bubble,.result-card.is-celebrating .result-confetti{animation:none}}
+
+.mode-best{margin:0;font-weight:800;color:#6357cd;font-size:13px;text-align:center}
+.game-guide-links{display:flex;align-items:center;justify-content:center;gap:10px 17px;flex-wrap:wrap;margin:0 0 22px;font-size:13px;line-height:1.65}
+.game-guide-links span{color:#77798d}
+.game-guide-links a{color:#534ac5;text-decoration:underline;text-underline-offset:3px;font-weight:700}
+.game-guide-links a:hover{color:#ec7186}
+@media(max-width:540px){.game-guide-links{justify-content:flex-start}.game-guide-links span{flex-basis:100%}}
+
+.footer-privacy{font-size:12px;color:inherit;text-decoration:underline;text-underline-offset:3px}

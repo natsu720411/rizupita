@@ -1,7 +1,7 @@
 import './style.css';
 import './extras.js';
 import './analytics.js';
-import {nearestBeatIndex,scoreBeats,rankResults} from './rhythm-core.js';
+import {nearestBeatIndex,scoreBeats,rankResults,normalizeInputTimeStamp} from './rhythm-core.js';
 
 const $ = (id) => document.getElementById(id);
 const buttons = [...document.querySelectorAll('.difficulty')];
@@ -124,13 +124,15 @@ function eventToAudioTime(ctx,event) {
   // Convert the input event's high resolution performance timestamp to the audio clock.
   // This does NOT fully remove speaker/headphone/touchscreen hardware latency.
   const stamp=typeof ctx.getOutputTimestamp==='function' ? ctx.getOutputTimestamp() : null;
+  const eventTime=normalizeInputTimeStamp(event.timeStamp,performance.now(),performance.timeOrigin);
   if(stamp && stamp.performanceTime>0 && stamp.contextTime>0) {
-    return stamp.contextTime+(event.timeStamp-stamp.performanceTime)/1000;
+    return stamp.contextTime+(eventTime-stamp.performanceTime)/1000;
   }
-  return ctx.currentTime+(event.timeStamp-performance.now())/1000;
+  return ctx.currentTime+(eventTime-performance.now())/1000;
 }
 async function startGame() {
   resetInterface();
+  window.dispatchEvent(new CustomEvent('rizupita:begin',{detail:{source:'diagnosis'}}));
   const token=runToken;
   startButton.disabled=true;
   startButton.textContent='音を準備中…';
@@ -220,8 +222,11 @@ function hitBeat(event) {
   if(dot) dot.classList.add('is-hit');
 }
 tapPad.addEventListener('pointerdown',(event)=>{event.preventDefault();hitBeat(event);});
+tapPad.addEventListener('keydown',event=>{
+  if((event.code==='Space'||event.code==='Enter')&&!event.repeat){event.preventDefault();event.stopPropagation();hitBeat(event);}
+});
 window.addEventListener('keydown',(event)=>{
-  if(event.code!=='Space'||event.repeat||!game||tapPad.disabled) return;
+  if(event.defaultPrevented||event.code!=='Space'||event.repeat||!game||tapPad.disabled) return;
   if(event.target?.closest?.('button,a,input,textarea,select')) return;
   event.preventDefault();
   hitBeat(event);
@@ -370,6 +375,9 @@ function animateResultScore(score){
   }
   requestAnimationFrame(frame);
 }
+window.addEventListener('rizupita:begin',event=>{
+  if(event.detail?.source!=='diagnosis' && (game || startButton.disabled))resetInterface();
+});
 document.addEventListener('visibilitychange',()=>{
   if(document.hidden && game){
     resetInterface();
