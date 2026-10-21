@@ -1,4 +1,6 @@
 import './style.css';
+import './extras.js';
+import './analytics.js';
 
 const $ = (id) => document.getElementById(id);
 const buttons = [...document.querySelectorAll('.difficulty')];
@@ -196,7 +198,8 @@ function tick() {
 }
 function hitBeat(event) {
   if(!game || tapPad.disabled) return;
-  const t=eventToAudioTime(game.ctx,event);
+  const adjustment=typeof window.rizupitaGetLatencyMs==='function' ? window.rizupitaGetLatencyMs() : 0;
+  const t=eventToAudioTime(game.ctx,event)-adjustment/1000;
   const index=Math.round((t-game.firstBeat)/game.interval);
   const windowSec=Math.min(.23,game.interval*.44);
   if(index<0 || index>=TOTAL_BEATS || Math.abs(t-(game.firstBeat+index*game.interval))>windowSec) {
@@ -247,6 +250,8 @@ function finishGame() {
   $('tap-feedback').textContent='今回のリズムはどうだったかな？';
   game=null;
   renderResult(result,previousBest);
+  window.dispatchEvent(new CustomEvent("rizupita:result",{detail:{result,rank:tierFor(result.score)[0]}}));
+  window.dispatchEvent(new CustomEvent("rizupita:analytics",{detail:{name:"diagnosis_complete",params:{tempo:result.bpm,score:result.score}}}));
   renderHistory();
   $('result-card').hidden=false;
   $('result-card').scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'start'});

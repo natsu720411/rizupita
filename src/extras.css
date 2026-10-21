@@ -1,0 +1,39 @@
+
+/* Additional practice modes and sharing controls. Isolated from the original diagnosis. */
+.latency-setting{margin:20px auto 10px;padding:18px;max-width:540px;border-radius:16px;background:#f5f4fe;border:1px solid #e9e6fc;text-align:left}
+.latency-setting label{display:flex;justify-content:space-between;gap:10px;font-weight:800;font-size:14px;color:#303458}
+.latency-setting output{color:#6256d9;font-variant-numeric:tabular-nums}
+.latency-setting input{width:100%;accent-color:#7065ed;margin:15px 0 4px}
+.latency-setting p{font-size:12px;line-height:1.8;color:#6c7088;margin:2px 0}
+.modes-section{padding:82px 0;background:linear-gradient(180deg,#f9f8ff,#f1f4ff)}
+.modes-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:0 0 23px}
+.mode-card{min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:10px;padding:23px 16px;background:#fff;border:2px solid #e4e6f5;border-radius:20px;text-align:left;color:#2b3052;box-shadow:0 8px 22px rgba(45,50,90,.035);transition:transform .18s,border-color .18s,box-shadow .18s}
+.mode-card:hover{transform:translateY(-3px)}
+.mode-card.is-chosen{border-color:#776bef;box-shadow:0 7px 25px rgba(119,107,239,.15);background:#fcfbff}
+.mode-card strong{font-size:16px;font-weight:800}
+.mode-card small{font-size:12px;color:#68708f;line-height:1.65}
+.mode-icon{display:grid;place-items:center;width:52px;height:52px;background:#f2efff;color:#776bef;border-radius:14px;font-size:30px}
+.mode-player{background:#fff;border:1px solid #e2e5f3;border-radius:28px;padding:30px 34px;box-shadow:0 17px 46px rgba(32,38,81,.065)}
+.mode-player-header{display:flex;justify-content:space-between;align-items:flex-start;gap:20px}
+.mode-player-header h3{margin:10px 0;font-size:24px;color:#252b51}
+.mode-player-header p{margin:0;color:#636b86;font-size:14px;line-height:1.8}
+.mode-bpm-label{display:flex;align-items:center;gap:10px;font-weight:700;white-space:nowrap;font-size:13px}
+.mode-bpm-label select{border-radius:12px;padding:9px 11px;border:1px solid #cfd2e8;background:#fff;color:#2b3052;font-size:14px}
+.mode-play-area{display:flex;flex-direction:column;align-items:center;text-align:center;gap:15px;padding:30px 10px}
+#mode-status{min-height:25px;margin:0;font-size:15px;font-weight:700;color:#6159a8}
+.mode-tap-pad{display:flex;justify-content:center;align-items:center;flex-direction:column;gap:5px;width:min(220px,56vw);height:min(220px,56vw);border-radius:50%;border:10px solid #fff;background:linear-gradient(145deg,#8074f7,#564be4);box-shadow:0 15px 40px rgba(101,83,220,.28),0 0 0 2px #dedafd;color:white;font-size:80px;font-weight:800;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.mode-tap-pad small{font-size:15px;font-weight:700}
+.mode-tap-pad:disabled{opacity:.62;filter:saturate(.6)}
+.mode-tap-pad.is-hit{transform:scale(.965);filter:brightness(1.15)}
+.mode-progress{margin:0;color:#747996;font-variant-numeric:tabular-nums;font-size:13px}
+.mode-result{margin:0;min-height:29px;font-size:16px;font-weight:800;color:#343a6e}
+.mode-controls{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.mode-caveat{margin:20px 0 0;text-align:center;font-size:12px;line-height:1.7;color:#858aa4}
+.related-section{padding:46px 0 22px}
+.related-card{background:#1f2549;border-radius:25px;color:#fff;padding:34px;display:flex;align-items:center;justify-content:space-between;gap:32px}
+.related-card .section-kicker{color:#ffa788}
+.related-card h2{font-size:24px;margin:12px 0}
+.related-card p{margin:0;color:#d6daf2;font-size:14px;line-height:1.8}
+.related-card .button{flex-shrink:0}
+@media (max-width:850px){.modes-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.mode-player-header{flex-direction:column}.related-card{flex-direction:column;align-items:flex-start}}
+@media (max-width:520px){.modes-section{padding:58px 0}.modes-grid{gap:9px}.mode-card{padding:16px 11px;gap:8px}.mode-card strong{font-size:13px}.mode-card small{font-size:11px}.mode-icon{width:44px;height:44px;font-size:24px}.mode-player{padding:22px 14px}.mode-player-header h3{font-size:20px}.related-card{padding:26px 20px}.related-card h2{font-size:20px}.latency-setting{margin:16px 0 8px}}
