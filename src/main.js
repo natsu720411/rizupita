@@ -2,6 +2,7 @@ import './style.css';
 import './extras.js';
 import './analytics.js';
 import {nearestBeatIndex,scoreBeats,rankResults,normalizeInputTimeStamp} from './rhythm-core.js';
+import {createInstantMeter} from './timing-meter.js';
 
 const $ = (id) => document.getElementById(id);
 const buttons = [...document.querySelectorAll('.difficulty')];
@@ -9,6 +10,7 @@ const progressEl = $('beat-progress');
 const startButton = $('start-button');
 const resetButton = $('reset-button');
 const tapPad = $('tap-pad');
+const diagnosisMeter=createInstantMeter('diagnosis-meter');
 const STORAGE_KEY = 'rizupita-results-v1';
 const TOTAL_BEATS = 16;
 const COUNT_IN = 4;
@@ -76,6 +78,7 @@ function resetInterface() {
   setPad('READY?','♪','音に合わせてタップ');
   $('tap-feedback').textContent='スタートを押すと音が鳴ります';
   $('tempo-indicator').textContent=`${bpm} BPM`;
+  diagnosisMeter.reset(bpm);
   $('result-card').hidden=true;
   $('result-card').classList.remove('is-celebrating');
   clearProgress();
@@ -97,6 +100,7 @@ function setDifficulty(nextBpm) {
     button.setAttribute('aria-pressed',String(selected));
   }
   $('tempo-indicator').textContent=`${bpm} BPM`;
+  diagnosisMeter.reset(bpm);
 }
 buttons.forEach(button=>{
   if (!button.hasAttribute('aria-pressed')) button.setAttribute('aria-pressed','false');
@@ -207,12 +211,21 @@ function hitBeat(event) {
   const index=nearestBeatIndex(t,game.firstBeat,game.interval,TOTAL_BEATS);
   if(index<0) {
     game.extra++;
-    $('tap-feedback').textContent='拍のタイミングを狙ってみよう！';
+    const closest=Math.max(0,Math.min(TOTAL_BEATS-1,Math.round((t-game.firstBeat)/game.interval)));
+    const errorMs=(t-(game.firstBeat+closest*game.interval))*1000;
+    diagnosisMeter.update(errorMs,game.bpm,{miss:true});
+    $('tap-feedback').textContent='判定範囲外。音に合わせてもう一度！';
     return;
   }
-  if(game.taps[index]!==null) {game.extra++;return;}
   const errorMs=(t-(game.firstBeat+index*game.interval))*1000;
+  if(game.taps[index]!==null) {
+    game.extra++;
+    diagnosisMeter.update(errorMs,game.bpm,{duplicate:true});
+    $('tap-feedback').textContent='同じ拍を2回タップしました';
+    return;
+  }
   game.taps[index]=errorMs;
+  diagnosisMeter.update(errorMs,game.bpm);
   tapPad.classList.remove('is-tapped');
   void tapPad.offsetWidth;
   tapPad.classList.add('is-tapped');

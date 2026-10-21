@@ -1,6 +1,7 @@
 
 import './extras.css';
 import {scoreBeats,normalizeInputTimeStamp} from './rhythm-core.js';
+import {createInstantMeter} from './timing-meter.js';
 
 const byId=(id)=>document.getElementById(id);
 const latencyKey='rizupita-latency-ms';
@@ -32,6 +33,7 @@ const specs={
 const modeButtons=[...document.querySelectorAll('[data-mode]')];
 const modeTap=byId('mode-pad'),modeStart=byId('mode-start'),modeStop=byId('mode-stop');
 const modeTempo=byId('mode-bpm');
+const modeMeter=createInstantMeter('mode-meter');
 let latestModeResult=null;
 function updateModeBest() {
   const label=byId('mode-best');
@@ -42,7 +44,7 @@ function updateModeBest() {
     label.textContent=best!==null&&Number.isFinite(best)?'自己ベスト：'+best+'点':'このゲームの最初の記録を作ろう！';
   }catch{label.textContent='ベストスコアを表示できません';}
 }
-modeTempo.addEventListener('change',()=>{updateModeBest();});
+modeTempo.addEventListener('change',()=>{updateModeBest();modeMeter.reset(Number(modeTempo.value));});
 
 let mode='practice',state=null,context=null,rafId=0,token=0;
 const COUNT_IN=4;
@@ -57,6 +59,7 @@ function stopMode(quiet=false){
   byId('mode-share').hidden=true;
   setModeButtons(false);
   if(!quiet)announce('モードを選んでスタート！');
+  modeMeter.reset(Number(modeTempo.value));
 }
 function selectMode(next){
   if(!specs[next] || state) return;
@@ -74,6 +77,7 @@ function selectMode(next){
   byId('mode-progress').textContent='準備OK';
   announce('モードを選んでスタート！');
   updateModeBest();
+  modeMeter.reset(Number(modeTempo.value));
 }
 modeButtons.forEach(button=>button.addEventListener('click',()=>selectMode(button.dataset.mode)));
 function playTone(ctx,at,pitch,volume,nodes,duration=.075){
@@ -189,8 +193,17 @@ function tapMode(event){
     const delta=time-target.time;
     if(Math.abs(delta)<Math.abs(diff)){diff=delta;best=target;}
   }
-  if(!best||Math.abs(diff)>windowSec){state.extra++;byId('mode-result').textContent='今のタップは対象外！';return;}
+  if(!best||Math.abs(diff)>windowSec){
+    state.extra++;
+    const closest=state.targets.reduce((a,b)=>Math.abs(time-a.time)<=Math.abs(time-b.time)?a:b);
+    const offsetMs=(time-closest.time)*1000;
+    const duplicate=closest.hit!==null && Math.abs(offsetMs)<=windowSec*1000;
+    modeMeter.update(offsetMs,state.bpm,{miss:!duplicate,duplicate});
+    byId('mode-result').textContent=duplicate?'同じ拍を2回タップしました':'判定範囲外。音をよく聴いて再挑戦！';
+    return;
+  }
   best.hit=diff*1000;
+  modeMeter.update(best.hit,state.bpm);
   modeTap.classList.remove('is-hit');void modeTap.offsetWidth;modeTap.classList.add('is-hit');
   byId('mode-result').textContent=Math.abs(diff)<.045?'ピタッ！ ✨':(diff>0?'少し遅め！':'少し早め！');
 }

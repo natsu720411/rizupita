@@ -76,6 +76,12 @@
                 <div class="tap-decor tap-decor-a" aria-hidden="true"></div><div class="tap-decor tap-decor-b" aria-hidden="true"></div>
                 <button type="button" class="tap-pad" id="tap-pad" aria-label="リズムに合わせてタップ" disabled><span class="tap-pad-inner"><span class="tap-label" id="tap-label">READY?</span><strong id="tap-display">♪</strong><small id="tap-subtitle">音に合わせてタップ</small></span></button>
                 <div class="tap-caption" id="tap-feedback" aria-live="polite">スタートを押すと音が鳴ります</div>
+<div class="instant-meter" id="diagnosis-meter" role="group" aria-label="リアルタイムのタップ誤差">
+  <div class="instant-meter-heading"><span>タップのタイミング</span><strong class="instant-meter-reading" data-meter-reading aria-live="polite" aria-atomic="true">タップするとズレがわかる</strong></div>
+  <div class="instant-meter-labels" aria-hidden="true"><span>早い</span><span>ぴったり</span><span>遅い</span></div>
+  <div class="instant-meter-track" aria-hidden="true"><span class="instant-meter-zero"></span><span class="instant-meter-needle" data-meter-needle></span></div>
+  <div class="instant-meter-scale" aria-hidden="true"><span data-meter-minus>−230 ms</span><span>0 ms</span><span data-meter-plus>＋230 ms</span></div>
+</div>
               </div>
               <div class="progress-info"><span id="progress-text">0 / 16 BEATS</span><span id="tempo-indicator">110 BPM</span></div>
               <div class="beat-progress" id="beat-progress" aria-label="診断の進捗"></div>
@@ -125,7 +131,13 @@
 <nav class="game-guide-links" aria-label="ゲームごとの遊び方"><span>遊び方を詳しく見る：</span><a href="/guide/offbeat.html">裏拍チャレンジのコツ ↗</a><a href="/guide/silence.html">無音テンポのコツ ↗</a><a href="/guide/memory.html">リズム記憶のコツ ↗</a></nav>
     <div class="mode-player" id="mode-player">
       <div class="mode-player-header"><div><span class="mini-label">RHYTHM TRAINING</span><h3 id="mode-title">メトロノーム練習</h3><p id="mode-description">音に合わせて24拍タップしてみよう。</p></div><label class="mode-bpm-label" for="mode-bpm">テンポ <select id="mode-bpm"><option value="80">80 BPM</option><option value="110" selected>110 BPM</option><option value="140">140 BPM</option></select></label></div>
-      <div class="mode-play-area"><p id="mode-status" role="status" aria-live="polite">モードを選んでスタート！</p><button id="mode-pad" class="mode-tap-pad" type="button" disabled aria-label="リズムをタップする">♪<small>ここをタップ</small></button><p id="mode-progress" class="mode-progress">準備OK</p><p id="mode-best" class="mode-best">練習モード：自分のペースで上達しよう</p><p id="mode-result" class="mode-result" aria-live="polite"></p></div>
+      <div class="mode-play-area"><p id="mode-status" role="status" aria-live="polite">モードを選んでスタート！</p><button id="mode-pad" class="mode-tap-pad" type="button" disabled aria-label="リズムをタップする">♪<small>ここをタップ</small></button><p id="mode-progress" class="mode-progress">準備OK</p>
+<div class="instant-meter" id="mode-meter" role="group" aria-label="リアルタイムのタップ誤差">
+  <div class="instant-meter-heading"><span>タップのタイミング</span><strong class="instant-meter-reading" data-meter-reading aria-live="polite" aria-atomic="true">タップするとズレがわかる</strong></div>
+  <div class="instant-meter-labels" aria-hidden="true"><span>早い</span><span>ぴったり</span><span>遅い</span></div>
+  <div class="instant-meter-track" aria-hidden="true"><span class="instant-meter-zero"></span><span class="instant-meter-needle" data-meter-needle></span></div>
+  <div class="instant-meter-scale" aria-hidden="true"><span data-meter-minus>−230 ms</span><span>0 ms</span><span data-meter-plus>＋230 ms</span></div>
+</div><p id="mode-best" class="mode-best">練習モード：自分のペースで上達しよう</p><p id="mode-result" class="mode-result" aria-live="polite"></p></div>
       <div class="mode-controls"><button class="button button-primary" id="mode-start" type="button">ゲームスタート ↗</button><button class="button button-outline" id="mode-stop" type="button" hidden>やめる ↺</button><button class="button button-secondary" id="mode-share" type="button" hidden>スコアを共有 ↗</button></div>
       <p class="mode-caveat">練習結果はゲーム上の参考値です。Bluetooth機器や端末の遅延は上の「タイミング補正」を共通で使用します。</p>
     </div>
