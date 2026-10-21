@@ -173,3 +173,17 @@
 @media(prefers-reduced-motion:reduce){#level-bar-fill{transition:none}}
 
 .daily-guide-link{display:inline-block;margin-top:5px;color:#fff0cb;font-size:12px;text-decoration:underline;text-underline-offset:4px;font-weight:800}
+
+/* Make the daily challenge immediately discoverable on desktop and mobile. */
+#daily{scroll-margin-top:88px}
+.hero-daily-promote{display:flex;align-items:center;gap:12px;max-width:450px;margin-top:24px;padding:12px 13px;border:1px solid #a6a3ff50;background:linear-gradient(110deg,#efebff,#fff5ea);color:#353359;border-radius:17px;box-shadow:0 10px 22px #47448f14}
+.hero-daily-icon{display:grid;place-items:center;width:37px;height:37px;border-radius:12px;background:#ffedc6;color:#8b5a24;font-size:22px;flex-shrink:0}
+.hero-daily-promote>span:nth-child(2){display:flex;flex-direction:column;flex:1;min-width:0}
+.hero-daily-promote strong{font-size:13px;line-height:1.45}
+.hero-daily-promote small{font-size:11px;color:#6a6d89;line-height:1.6;margin-top:3px}
+.hero-daily-promote a{color:#5444cf;font-size:13px;white-space:nowrap;font-weight:900;text-decoration:underline;text-underline-offset:4px;padding:8px}
+.daily-new-chip{display:inline-block;vertical-align:middle;background:#ffd6a9;color:#59411b;font-size:10px;border-radius:999px;padding:4px 9px;margin-left:4px;white-space:nowrap}
+.daily-section{padding:16px 0 22px}
+.daily-card{border:2px solid #cabaff}
+@media(max-width:700px){#daily{scroll-margin-top:77px}.hero-daily-promote{margin-top:18px;padding:11px 12px}.hero-daily-promote strong{font-size:12px}.daily-section{padding:8px 0 20px}.daily-card{padding:22px 18px}}
+@media(max-width:400px){.nav-cta{font-size:11px;padding:10px 12px}.hero-daily-promote a{font-size:12px}}
