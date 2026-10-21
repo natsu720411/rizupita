@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#151934" />
+  <meta name="description" content="リズピタは無料で使えるリズム感診断サイト。音に合わせて16回タップするだけで、リズム感を100点満点で採点。タイミングのズレや自己ベストも確認できます。登録不要・スマホ対応。" />
+  <meta name="keywords" content="リズム感診断,リズム感テスト,リズム感,無料,音楽,リズムゲーム,リズピタ" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="ja_JP" />
+  <meta property="og:title" content="リズピタ｜タップするだけの無料リズム感診断" />
+  <meta property="og:description" content="そのリズム感、何点？音に合わせて16回タップ。無料・登録不要・スマホ対応のリズム感診断。" />
+  <meta property="og:image" content="/og.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="リズピタ｜無料リズム感診断" />
+  <meta name="twitter:description" content="16回のタップで、あなたのリズム感を100点満点でチェック！" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <title>リズピタ｜無料リズム感診断・リズム感テスト</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;600;700;800;900&display=swap');
+:root{font-family:'DM Sans','Noto Sans JP',system-ui,-apple-system,BlinkMacSystemFont,sans-serif;color:#202445;background:#fffefa;font-synthesis:none;font-optical-sizing:auto;text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+*{box-sizing:border-box}body{margin:0;min-width:320px}button,a{font:inherit}button{cursor:pointer}button:disabled{cursor:default}a{color:inherit;text-decoration:none}button,a,summary{-webkit-tap-highlight-color:transparent}button:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid #776bef;outline-offset:4px}[hidden]{display:none!important}.container{width:min(1160px,calc(100% - 48px));margin-inline:auto}.page-wrap{overflow:hidden}.site-header{height:86px;border-bottom:1px solid #eeeeef;background:rgba(255,254,250,.94);position:relative;z-index:5}.nav-inner{height:100%;display:flex;align-items:center;gap:36px}.brand{display:inline-flex;align-items:center;gap:10px;font-size:24px;white-space:nowrap;font-weight:900;letter-spacing:-.055em}.brand-mark{width:36px;height:36px;display:grid;place-items:center;border-radius:12px;background:#1f2447;color:#ffad87}.brand-mark svg{width:28px;height:28px}.brand-dot{color:#ff877f}.site-header nav{display:flex;gap:32px;margin-left:auto}.site-header nav a{font-size:13px;font-weight:700;color:#686a7c}.site-header nav a:hover,.text-link:hover{color:#ef6e77}.nav-cta{display:inline-flex;align-items:center;gap:16px;padding:12px 19px;background:#252947;color:white;border-radius:100px;font-size:13px;font-weight:800}.nav-cta:hover{background:#414671}.hero{display:grid;grid-template-columns:1.02fr 1fr;align-items:center;min-height:625px;padding-top:56px;padding-bottom:60px;gap:30px}.hero-copy{position:relative;z-index:1}.eyebrow{display:inline-flex;align-items:center;gap:7px;border-radius:50px;padding:10px 15px;background:#fff0ea;color:#b76864;font-size:12px;font-weight:800;letter-spacing:.02em}.sparkle{font-size:16px;color:#f2856b}.hero h1{font-size:clamp(42px,5.5vw,75px);line-height:1.38;letter-spacing:-.09em;margin:21px 0 21px;color:#1d2240;font-weight:900}.gradient-text{background:linear-gradient(92deg,#fc8979 8%,#ef75ac 70%,#ae79d8 100%);color:transparent;background-clip:text}.hero-description{font-weight:600;color:#767689;font-size:16px;line-height:2}.hero-actions{display:flex;align-items:center;gap:25px;margin-top:33px}.button{display:inline-flex;align-items:center;justify-content:center;gap:17px;border:0;min-height:52px;border-radius:14px;padding:15px 23px;font-weight:800;font-size:14px;transition:transform .18s,box-shadow .18s,background .18s;text-align:center;white-space:nowrap}.button:hover:not(:disabled){transform:translateY(-2px)}.button-primary{color:white;background:linear-gradient(105deg,#fa8d77,#f47795);box-shadow:0 10px 25px rgba(241,111,128,.2)}.button-primary:hover{box-shadow:0 13px 28px rgba(241,111,128,.3)}.text-link{font-size:13px;font-weight:800}.hero-facts{display:flex;gap:20px;flex-wrap:wrap;margin-top:34px;color:#85869a;font-size:12px;font-weight:700}.hero-visual{height:480px;position:relative;display:grid;place-items:center}.hero-visual::before{content:"";position:absolute;width:460px;height:460px;max-width:100%;border-radius:50%;background:#fff1ea;filter:blur(35px);opacity:.7}.preview-card{position:relative;width:min(355px,90%);height:405px;padding:24px 26px;border:1px solid #f1ebef;border-radius:27px;background:white;box-shadow:0 25px 80px #34385718;transform:rotate(-4deg)}.preview-top{display:flex;justify-content:space-between;align-items:center}.preview-label{font-size:10px;letter-spacing:.2em;font-weight:900;color:#9b9aab}.preview-label i{display:inline-block;width:7px;height:7px;border-radius:50%;background:#ed8d83;margin-right:5px}.preview-star{font-size:22px;color:#ff9d93}.preview-round{position:relative;margin:33px auto 25px;width:228px;height:228px;border-radius:50%;display:grid;place-items:center;background:#fff5f1}.preview-orbit{position:absolute;border:1px dashed #ffb3ac;border-radius:50%}.orbit-one{inset:12px}.orbit-two{inset:27px;border-style:solid;border-color:#ffe1da}.preview-center{width:154px;height:154px;border-radius:50%;background:linear-gradient(150deg,#fb9c81,#ee789e);box-shadow:0 10px 25px #ee83974a;display:flex;align-items:center;justify-content:center;flex-direction:column;color:#fff}.preview-center-small{font-size:8px;font-weight:900;letter-spacing:.2em}.preview-center strong{font-size:70px;line-height:1.15}.preview-center small{font-size:8px;letter-spacing:.09em;font-weight:900}.preview-beats{display:flex;justify-content:space-around}.preview-beats i{width:26px;height:9px;border-radius:10px;background:#f5e8e5}.preview-beats i:nth-child(-n+5){background:#f19a96}.preview-footer{display:flex;justify-content:space-between;margin-top:22px;color:#aaa3aa;font-size:10px;font-weight:800}.preview-footer span:last-child{color:#f28f96}.floating-note{position:absolute;color:#f3a5a4;font-size:40px}.note-left{left:3%;top:25%}.note-right{right:3%;bottom:17%;color:#b3a3e9}.float-chip{position:absolute;padding:13px 17px;border-radius:13px;background:white;box-shadow:0 12px 35px #2631521b;font-size:12px;font-weight:800;color:#555b7a}.float-chip span{color:#f18b8b}.chip-left{left:0;bottom:26%;transform:rotate(5deg)}.chip-right{right:-2%;top:27%;transform:rotate(6deg)}
+.diagnosis-section{background:linear-gradient(180deg,#f9f7ff,#fdfbff 78%,#fffefa);padding:85px 0 100px}.diagnosis-container{max-width:800px}.section-head{text-align:center;margin-bottom:42px}.section-kicker{font-size:12px;font-weight:900;letter-spacing:.23em;color:#f28e87;margin-bottom:12px}.section-head h2{font-size:clamp(26px,3.2vw,36px);letter-spacing:-.06em;margin:0 0 14px;font-weight:900;color:#212540}.section-head p{color:#85849b;font-size:14px;font-weight:600;line-height:1.8;margin:0}.game-card,.result-card,.history-card{background:white;border:1px solid #eeecf4;border-radius:28px;box-shadow:0 18px 60px #33325b0b}.game-card{padding:33px 38px 31px}.game-topline,.game-panel-heading{display:flex;justify-content:space-between;align-items:center;gap:12px}.mini-label{font-size:11px;color:#9696a8;letter-spacing:.16em;font-weight:900}.game-top-note{font-size:12px;color:#a1a0b0;font-weight:700}.game-top-note span{color:#ef8299}.difficulty-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:19px}.difficulty{background:#faf9fd;border:2px solid transparent;color:#74778f;border-radius:14px;min-height:77px;display:flex;justify-content:center;align-items:center;flex-direction:column;gap:5px;transition:border-color .2s,background .2s}.difficulty-name{font-size:16px;font-weight:900}.difficulty small{font-size:11px;font-weight:800;color:#a1a0b1}.difficulty.is-selected{border-color:#f48e94;background:#fff4f2;color:#dc757b}.difficulty.is-selected small{color:#e4a0a4}.difficulty:not(:disabled):hover{border-color:#f4b6bb}.game-divider{height:1px;background:#f0edf5;margin:31px 0}.status-pill{font-size:11px;font-weight:900;border-radius:50px;padding:8px 13px;color:#8276d3;background:#f3f0ff}.game-instruction{text-align:center;font-size:14px;font-weight:800;color:#676982;margin:22px 0 0;min-height:22px}.tap-stage{height:335px;display:flex;align-items:center;justify-content:center;flex-direction:column;position:relative}.tap-decor{position:absolute;width:272px;height:272px;border:1px dashed #f0d6e1;border-radius:50%}.tap-decor-b{width:296px;height:296px;border-color:#f2ebf7}.tap-pad{border:0;width:237px;height:237px;border-radius:50%;background:linear-gradient(150deg,#ff9d82 5%,#f07da0 90%);color:#fff;display:grid;place-items:center;position:relative;box-shadow:0 22px 45px #f18b9b4d,inset 0 5px 18px #ffffff29;transition:transform .1s,opacity .2s;touch-action:manipulation;user-select:none}.tap-pad::before{content:"";inset:9px;border:2px solid #ffffff4d;position:absolute;border-radius:50%}.tap-pad:disabled{opacity:.93}.tap-pad.is-active{cursor:pointer;animation:padGlow 1.3s infinite alternate}.tap-pad.is-tapped{transform:scale(.955)}.tap-pad-inner{display:flex;align-items:center;justify-content:center;flex-direction:column;position:relative;z-index:1}.tap-label{font-size:11px;font-weight:900;letter-spacing:.2em}.tap-pad strong{font-size:88px;font-weight:900;line-height:1.2;letter-spacing:-.05em;font-variant-numeric:tabular-nums}.tap-pad small{font-size:11px;font-weight:800}.tap-caption{position:absolute;bottom:7px;color:#a4a2b4;font-size:12px;font-weight:700;text-align:center}.progress-info{display:flex;justify-content:space-between;color:#9b9bac;font-size:11px;font-weight:800;letter-spacing:.06em}.beat-progress{display:flex;gap:7px;margin:12px 0 24px}.beat-dot{height:9px;flex:1;min-width:0;background:#f0edf4;border-radius:6px;transition:background .15s}.beat-dot.is-played{background:#f8b9b4}.beat-dot.is-hit{background:#8075d9}.beat-dot.is-missed{background:#e5e0ed}.game-actions{display:flex;gap:10px;justify-content:center}.game-start{width:min(320px,100%)}.button-secondary{background:#f4f1fb;color:#777298}.game-tip{font-size:11px;font-weight:600;color:#aeacbb;text-align:center;line-height:1.8;margin:18px 0 0}.game-error{font-size:13px;color:#b8404c;text-align:center;font-weight:800}.is-playing .tap-pad.is-active{box-shadow:0 20px 47px #ef88b06c}.result-card{padding:32px 36px;margin-top:22px;scroll-margin-top:24px}.result-top,.history-head{display:flex;justify-content:space-between;align-items:center}.result-top h3{font-size:24px;letter-spacing:-.05em;margin:8px 0}.result-confetti{color:#f2a0a0;font-size:25px}.result-score-row{display:flex;align-items:center;gap:34px;padding:18px 0 28px}.score-bubble{width:158px;height:158px;flex-shrink:0;border-radius:50%;background:linear-gradient(145deg,#fff1ed,#f9e6fd);display:flex;align-items:center;justify-content:center;flex-direction:column;color:#ee7a85}.score-bubble strong{font-size:65px;line-height:1.18;letter-spacing:-.08em;font-weight:900}.score-bubble span{font-size:13px;font-weight:900}.rank-title{font-size:25px;font-weight:900;letter-spacing:-.05em;color:#282b4e}.result-desc p{margin:9px 0;color:#85849b;font-size:13px;line-height:1.9;font-weight:600}.result-desc .best-label{color:#eb8e80;font-weight:900}.result-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));background:#faf9fc;border-radius:15px;padding:24px 10px}.result-metrics>div{display:flex;flex-direction:column;align-items:center;gap:8px}.result-metrics>div:not(:first-child){border-left:1px solid #e7e4ef}.result-metrics small{color:#9897a8;font-size:11px;font-weight:700}.result-metrics strong{color:#282b4c;font-size:23px;font-weight:900}.result-metrics strong em{font-size:12px;font-style:normal;font-weight:700}.chart-section{margin-top:28px}.chart-head,.chart-scale{display:flex;justify-content:space-between;align-items:center}.chart-head h4{font-size:15px;margin:0;font-weight:900}.chart-head span{font-size:11px;color:#aaa8b7;font-weight:700}.timing-chart{display:grid;grid-template-columns:repeat(16,minmax(0,1fr));gap:4px;margin:20px 0 3px}.chart-beat{min-width:0}.chart-track{height:80px;background:#faf9fc;border-radius:5px;position:relative;display:block;overflow:hidden}.chart-center-line{position:absolute;width:2px;height:100%;top:0;left:50%;transform:translateX(-50%);background:#ded9ed}.chart-marker{position:absolute;top:25px;height:30px;width:7px;max-width:90%;border-radius:10px;background:#ed8b90;transform:translateX(-50%);box-shadow:0 0 0 2px #ffffff}.chart-marker.is-missing{background:#c6c3cd;height:7px;top:36px}.chart-beat small{display:block;text-align:center;margin-top:4px;font-size:9px;font-weight:800;color:#aaa9b9}.chart-scale{color:#a19eae;font-size:10px;font-weight:700}.result-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}.button-outline{border:1px solid #e8e5ef;color:#76718f;background:white}.result-disclaimer{font-size:10px;line-height:1.9;color:#aaa8b7;margin:23px 0 0}.history-card{margin-top:24px;padding:26px 32px}.history-head h3{font-size:17px;margin:0;font-weight:900}.history-head h3 span{color:#ed969c}.history-head>span{font-size:11px;color:#aaa8b7;font-weight:700}.history-list{margin-top:16px}.history-empty{font-size:13px;color:#aaa8ba;margin:10px 0}.history-row{display:flex;justify-content:space-between;align-items:center;border-top:1px solid #f0eef5;padding:15px 2px}.history-row strong{font-size:17px;font-weight:900}.history-meta{display:flex;align-items:center;gap:13px;flex-wrap:wrap}.history-tempo{font-weight:900;font-size:13px}.history-date{font-size:11px;color:#a1a0af}.history-best{border-radius:20px;background:#fff0e7;color:#e99771;padding:3px 7px;font-size:9px;font-weight:900}
+.how-section{padding:98px 0}.steps-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}.step-card{border:1px solid #eeedf2;border-radius:20px;padding:26px;min-height:235px;background:white}.step-number{font-size:12px;letter-spacing:.15em;color:#ed9e97;font-weight:900}.step-icon{width:61px;height:61px;border-radius:17px;background:#fff0ee;color:#ec8e94;display:grid;place-items:center;font-size:32px;margin:18px 0 20px}.step-card:nth-child(2) .step-icon{background:#f0ecff;color:#887ddc}.step-card:nth-child(3) .step-icon{background:#fff1e2;color:#e7a96b}.step-card h3,.feature-panel h3{font-size:18px;letter-spacing:-.05em;font-weight:900;margin:0 0 9px}.step-card p,.feature-panel p{color:#9392a3;font-size:13px;line-height:1.9;font-weight:600;margin:0}.features-section{padding:90px 0;background:#fcf9fa}.feature-grid{display:grid;grid-template-columns:1.15fr 1fr 1fr;gap:20px}.feature-panel{border:1px solid #f1e9ed;border-radius:20px;background:white;padding:29px;min-height:245px}.feature-highlight{background:linear-gradient(135deg,#fff0e9,#fff4fa)}.feature-emoji{width:48px;height:48px;background:#fff0f1;color:#e9878d;border-radius:14px;display:grid;place-items:center;font-size:23px;margin-bottom:23px}.feature-highlight .feature-emoji{background:white}.feature-mini-viz{display:flex;align-items:center;gap:12px;margin-top:25px;color:#ef929a}.feature-mini-viz i{display:block;flex:1;height:8px;background:#ffcabd;border-radius:8px}.feature-mini-viz i:nth-child(odd){height:22px;background:#eeb5d6}.faq-section{padding:100px 0;max-width:830px}.faq-section .section-head{margin-bottom:30px}.faq-list details{border-bottom:1px solid #e8e6ee;padding:22px 12px}.faq-list summary{cursor:pointer;font-size:15px;font-weight:800;list-style:none;position:relative;padding-right:35px}.faq-list summary::-webkit-details-marker{display:none}.faq-list summary::after{content:'+';position:absolute;right:4px;top:-5px;font-size:24px;font-weight:400;color:#a79bad}.faq-list details[open] summary::after{content:'−'}.faq-list details p{font-size:13px;line-height:2;color:#838498;margin:17px 0 3px}.closing-section{padding:0 0 100px}.closing-box{position:relative;background:radial-gradient(circle at 80% 25%,#49476e,#242845 70%);color:#fff;padding:60px 25px;text-align:center;border-radius:28px;overflow:hidden}.closing-box:before,.closing-box:after{content:'♪';font-size:110px;color:#fff1;position:absolute;left:10%;bottom:-25px;transform:rotate(-15deg)}.closing-box:after{content:'♫';left:auto;right:10%;top:-20px;bottom:auto}.closing-sparkle{font-size:30px;color:#ffa298}.closing-box h2{font-size:30px;font-weight:900;letter-spacing:-.05em;margin:12px 0}.closing-box p{font-size:14px;color:#d1cddd;font-weight:700}.button-white{margin-top:20px;background:white;color:#333551}.site-footer{border-top:1px solid #ecebf0;padding:29px 0 35px}.footer-inner{display:flex;align-items:center;gap:28px}.brand-footer{font-size:20px}.brand-footer .brand-mark{width:30px;height:30px;font-size:20px}.footer-inner p{font-size:12px;color:#a2a1b0}.footer-inner small{font-size:11px;color:#a6a5b2;margin-left:auto}@keyframes padGlow{to{box-shadow:0 20px 54px #ed88ad80,0 0 0 13px #f2a3b425}}@media(max-width:900px){.hero{grid-template-columns:1fr 1fr;gap:2px}.hero h1{font-size:48px}.hero-visual{transform:scale(.86)}.site-header nav{gap:18px}.feature-grid{grid-template-columns:repeat(3,1fr)}.feature-panel{padding:22px}}
+@media(max-width:700px){.container{width:min(100% - 32px,520px)}.site-header{height:66px}.brand{font-size:21px}.brand-mark{width:34px;height:34px}.site-header nav{display:none}.nav-cta{margin-left:auto;padding:10px 14px;font-size:11px}.hero{min-height:auto;display:flex;flex-direction:column;padding:45px 0 65px;gap:20px}.hero-copy{width:100%}.hero h1{font-size:clamp(42px,10vw,60px);margin-top:18px}.hero-description{font-size:14px}.hero-actions{gap:16px;flex-wrap:wrap;margin-top:27px}.hero-facts{margin-top:24px;gap:12px;font-size:11px}.hero-visual{height:365px;width:100%;transform:scale(.86);margin:-12px 0 -18px}.preview-card{height:390px}.chip-left{left:-1%;bottom:24%}.chip-right{right:-3%}.diagnosis-section{padding:66px 0 75px}.section-head{margin-bottom:31px}.section-head h2{font-size:27px}.section-head p{font-size:12px}.game-card{padding:24px 18px 26px;border-radius:20px}.game-top-note{font-size:10px}.difficulty-row{gap:7px}.difficulty{min-height:71px}.difficulty-name{font-size:14px}.game-divider{margin:23px 0}.game-instruction{font-size:12px;line-height:1.7;padding:0 8px}.tap-stage{height:305px}.tap-pad{width:213px;height:213px}.tap-decor{width:242px;height:242px}.tap-decor-b{width:268px;height:268px}.tap-caption{font-size:10px}.game-tip{font-size:10px}.beat-progress{gap:5px}.result-card{padding:25px 17px;border-radius:20px}.result-score-row{gap:18px}.score-bubble{width:127px;height:127px}.score-bubble strong{font-size:54px}.rank-title{font-size:21px}.result-desc p{font-size:11px}.result-metrics{padding:18px 2px}.result-metrics small{font-size:9px}.result-metrics strong{font-size:19px}.chart-head h4{font-size:14px}.chart-head span{font-size:10px}.timing-chart{gap:2px}.chart-marker{width:5px}.result-actions{gap:8px}.result-actions .button{font-size:12px;padding:13px 14px;min-height:46px}.history-card{padding:21px 18px}.how-section{padding:75px 0}.steps-grid,.feature-grid{grid-template-columns:1fr;gap:14px}.step-card{min-height:auto;padding:22px}.step-icon{margin:12px 0 15px}.features-section{padding:72px 0}.feature-panel{min-height:unset;padding:25px}.faq-section{padding:77px 0}.faq-list summary{font-size:14px;line-height:1.7}.closing-section{padding-bottom:70px}.closing-box{padding:47px 18px}.closing-box h2{font-size:24px}.footer-inner{flex-direction:column;gap:8px;text-align:center}.footer-inner small{margin-left:0}}
+@media(max-width:375px){.hero h1{font-size:40px}.hero-visual{transform:scale(.77);margin:-37px 0}.hero-actions .button{padding:15px 16px}.score-bubble{width:110px;height:110px}.score-bubble strong{font-size:45px}.result-score-row{gap:13px}.rank-title{font-size:18px}.result-metrics strong{font-size:17px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;scroll-behavior:auto!important;transition:none!important}}
+
+</style>
+</head>
+<body>
+  <div class="page-wrap" id="top">
+    <header class="site-header">
+      <div class="container nav-inner">
+        <a class="brand" href="#top" aria-label="リズピタ トップへ"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 40 40" fill="none"><path d="M6 22h6l4-10 6 18 5-13 3 5h4" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>リズピタ<span class="brand-dot">.</span></span></a>
+        <nav aria-label="メインメニュー"><a href="#diagnosis">診断する</a><a href="#features">リズピタとは</a><a href="#faq">よくある質問</a></nav>
+        <a class="nav-cta" href="#diagnosis">無料で試す <span aria-hidden="true">↗</span></a>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero container" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <div class="eyebrow"><span class="sparkle" aria-hidden="true">✦</span> 無料・登録不要・約15秒から</div>
+          <h1 id="hero-title">そのリズム感、<br /><span class="gradient-text">何点だろう？</span></h1>
+          <p class="hero-description">聴いて、タップして、結果をチェック。<br />あなたのリズム感を、ゲーム感覚で楽しく見える化。</p>
+          <div class="hero-actions"><a class="button button-primary" href="#diagnosis">さっそく診断する <span aria-hidden="true">↗</span></a><a class="text-link" href="#howto">遊び方を見る <span aria-hidden="true">↓</span></a></div>
+          <div class="hero-facts"><span>✓ スマホでOK</span><span>✓ マイク不要</span><span>✓ 何度でも無料</span></div>
+        </div>
+        <div class="hero-visual" aria-hidden="true">
+          <div class="floating-note note-left">♪</div><div class="floating-note note-right">♫</div>
+          <div class="preview-card"><div class="preview-top"><span class="preview-label"><i></i> RHYTHM CHECK</span><span class="preview-star">✦</span></div><div class="preview-round"><div class="preview-orbit orbit-one"></div><div class="preview-orbit orbit-two"></div><div class="preview-center"><span class="preview-center-small">YOUR BEAT</span><strong>♪</strong><small>KEEP THE RHYTHM</small></div></div><div class="preview-beats"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="preview-footer"><span>Feel the beat!</span><span>● ● ● ●</span></div></div>
+          <div class="float-chip chip-left"><span>⚡</span> テンポをつかもう</div><div class="float-chip chip-right"><span>✦</span> ピタッと決まる！</div>
+        </div>
+      </section>
+
+      <section class="diagnosis-section" id="diagnosis" aria-labelledby="diagnosis-title">
+        <div class="container diagnosis-container">
+          <div class="section-head"><div class="section-kicker">LET'S PLAY</div><h2 id="diagnosis-title">リズム感を測ってみよう！</h2><p>難易度を選んで、音のタイミングに合わせてタップするだけ。</p></div>
+          <div class="game-card">
+            <div class="game-topline"><span class="mini-label">01 / DIFFICULTY</span><span class="game-top-note">音量をオンにして遊んでね <span aria-hidden="true">♪</span></span></div>
+            <div class="difficulty-row" role="group" aria-label="難易度">
+              <button class="difficulty" data-bpm="80" type="button"><span class="difficulty-name">ゆったり</span><small>80 BPM</small></button>
+              <button class="difficulty is-selected" data-bpm="110" type="button" aria-pressed="true"><span class="difficulty-name">ふつう</span><small>110 BPM</small></button>
+              <button class="difficulty" data-bpm="140" type="button"><span class="difficulty-name">はやめ</span><small>140 BPM</small></button>
+            </div>
+            <div class="game-divider"></div>
+            <div class="game-main">
+              <div class="game-panel-heading"><span class="mini-label">02 / TAP THE BEAT</span><span id="game-status" class="status-pill" role="status" aria-live="polite">準備OK</span></div>
+              <p id="game-instruction" class="game-instruction">4拍のカウントを聴いたら、音に合わせて16回タップ！</p>
+              <div class="tap-stage">
+                <div class="tap-decor tap-decor-a" aria-hidden="true"></div><div class="tap-decor tap-decor-b" aria-hidden="true"></div>
+                <button type="button" class="tap-pad" id="tap-pad" aria-label="リズムに合わせてタップ" disabled><span class="tap-pad-inner"><span class="tap-label" id="tap-label">READY?</span><strong id="tap-display">♪</strong><small id="tap-subtitle">音に合わせてタップ</small></span></button>
+                <div class="tap-caption" id="tap-feedback" aria-live="polite">スタートを押すと音が鳴ります</div>
+              </div>
+              <div class="progress-info"><span id="progress-text">0 / 16 BEATS</span><span id="tempo-indicator">110 BPM</span></div>
+              <div class="beat-progress" id="beat-progress" aria-label="診断の進捗"></div>
+              <div class="game-actions"><button id="start-button" class="button button-primary game-start" type="button">診断スタート <span aria-hidden="true">↗</span></button><button class="button button-secondary" id="reset-button" type="button" hidden>やり直す ↺</button></div>
+              <p id="game-error" class="game-error" hidden role="alert"></p>
+              <p class="game-tip">PCならスペースキーでもタップできます。できるだけ端末のスピーカーで遊んでね。</p>
+            </div>
+          </div>
+
+          <section class="result-card" id="result-card" hidden aria-labelledby="result-title">
+            <div class="result-top"><div><span class="mini-label">YOUR RESULT</span><h3 id="result-title">診断結果</h3></div><span class="result-confetti" aria-hidden="true">✦ ♪ ✦</span></div>
+            <div class="result-score-row"><div class="score-bubble"><strong id="result-score">0</strong><span>/ 100 点</span></div><div class="result-desc"><div id="result-rank" class="rank-title">リズム上手！</div><p id="result-message">すばらしいリズム感！</p><p class="best-label" id="best-label">自己ベストに挑戦しよう</p></div></div>
+            <div class="result-metrics"><div><small>平均タイミング誤差</small><strong id="metric-error">— <em>ms</em></strong></div><div><small>早め・遅めの傾向</small><strong id="metric-bias">—</strong></div><div><small>ヒット数</small><strong id="metric-hit">— <em>/16</em></strong></div></div>
+            <div class="chart-section"><div class="chart-head"><h4>タップのタイミング</h4><span>中心がピッタリ</span></div><div class="timing-chart" id="timing-chart" role="img" aria-label="各拍の早い・遅いを表すグラフ"></div><div class="chart-scale"><span>早い</span><span>ピッタリ</span><span>遅い</span></div></div>
+            <div class="result-actions"><button class="button button-primary" id="share-button" type="button">結果をシェア <span aria-hidden="true">↗</span></button><a class="button button-outline" id="share-x" href="https://x.com/intent/tweet" target="_blank" rel="noopener noreferrer">Xに投稿 <span aria-hidden="true">↗</span></a><button class="button button-secondary" id="retry-button" type="button">もう一度 ↺</button></div>
+            <p class="result-disclaimer">※ 点数はゲーム用の参考値です。端末・ブラウザ・イヤホンによる音声や入力の遅延が結果に影響します。同じ環境での自己ベスト更新をおすすめします。</p>
+          </section>
+          <div class="history-card" id="history-card"><div class="history-head"><h3>あなたの記録 <span>✦</span></h3><span>この端末に保存</span></div><div id="history-list" class="history-list"><p class="history-empty">最初の診断結果がここに表示されます。</p></div></div>
+        </div>
+      </section>
+
+      <section class="how-section container" id="howto"><div class="section-head"><div class="section-kicker">HOW TO PLAY</div><h2>遊び方は、たったの3ステップ</h2><p>面倒な登録もアプリのダウンロードも必要ありません。</p></div><div class="steps-grid"><article class="step-card"><div class="step-number">01</div><div class="step-icon">♫</div><h3>難易度を選ぶ</h3><p>ゆったり・ふつう・はやめ。好きなテンポを選んでスタート！</p></article><article class="step-card"><div class="step-number">02</div><div class="step-icon">☝</div><h3>音に合わせてタップ</h3><p>最初の4拍を聴いたら、16拍のリズムに合わせてタップしよう。</p></article><article class="step-card"><div class="step-number">03</div><div class="step-icon">★</div><h3>結果をチェック！</h3><p>スコアやズレを確認。何度も挑戦して自己ベストを更新しよう。</p></article></div></section>
+
+      <section class="features-section" id="features"><div class="container"><div class="section-head"><div class="section-kicker">WHY RIZUPITA?</div><h2>リズム感が、もっと楽しくなる。</h2><p>ちょっとした空き時間に、音を楽しみながらチャレンジ。</p></div><div class="feature-grid"><article class="feature-panel feature-highlight"><div class="feature-emoji">✦</div><h3>自分のリズムが見える</h3><p>ただの点数だけじゃなく、早い？遅い？どれくらいズレた？がひと目でわかる。</p><div class="feature-mini-viz"><span>♪</span><i></i><i></i><i></i><i></i><i></i><i></i></div></article><article class="feature-panel"><div class="feature-emoji">⚡</div><h3>サクッと無料で遊べる</h3><p>登録不要・課金なし。ブラウザを開けばそのまま遊べるから、友だちとも比べやすい。</p></article><article class="feature-panel"><div class="feature-emoji">↗</div><h3>ベストスコアに挑戦</h3><p>記録はこの端末に保存。昨日の自分を越える楽しさを味わおう。</p></article></div></div></section>
+
+      <section class="faq-section container" id="faq"><div class="section-head"><div class="section-kicker">FAQ</div><h2>よくある質問</h2></div><div class="faq-list"><details><summary>リズピタは本当に無料ですか？</summary><p>はい。すべての診断機能を無料で使えます。会員登録やアプリのインストールも不要です。</p></details><details><summary>リズム感はどうやって採点していますか？</summary><p>メトロノームの拍とタップのタイミングの差をもとに、全16拍のスコアを計算しています。ミスした拍は0点として扱います。音声・入力の遅延に左右されるため、結果はゲーム用の参考値です。</p></details><details><summary>イヤホンでも遊べますか？</summary><p>遊べます。ただしBluetoothイヤホンなどでは音が届くまでの遅延が大きくなる場合があります。できるだけ本体スピーカーで、同じ環境で比較することをおすすめします。</p></details><details><summary>結果は保存されますか？</summary><p>最近の結果と自己ベストは、利用中のブラウザのローカルストレージに保存されます。サーバーへ送信しないため、別の端末やブラウザには引き継がれません。ブラウザのデータを消すと記録も消えます。</p></details></div></section>
+      <section class="closing-section container"><div class="closing-box"><span class="closing-sparkle">✦</span><h2>さあ、ビートにのってみよう。</h2><p>あなたの「ピタッ！」を見つけにいこう。</p><a href="#diagnosis" class="button button-white">無料でリズム感を診断する ↗</a></div></section>
+    </main>
+    <footer class="site-footer"><div class="container footer-inner"><a class="brand brand-footer" href="#top"><span class="brand-mark" aria-hidden="true">♪</span> リズピタ<span class="brand-dot">.</span></a><p>リズムが合うと、ちょっと嬉しい。</p><small>© 2026 リズピタ / 無料リズム感診断</small></div></footer>
+  </div>
+  <script type="module">
+
+
+const $ = (id) => document.getElementById(id);
+const buttons = [...document.querySelectorAll('.difficulty')];
+const progressEl = $('beat-progress');
+const startButton = $('start-button');
+const resetButton = $('reset-button');
+const tapPad = $('tap-pad');
+const STORAGE_KEY = 'rizupita-results-v1';
+const TOTAL_BEATS = 16;
+const COUNT_IN = 4;
+let bpm = 110;
+let game = null;
+let animationId = 0;
+let runToken = 0;
+let audioContext = null;
+let lastResult = null;
+
+const timeFormat = (n) => Number.isFinite(n) ? `${Math.round(n)}` : '—';
+const humanDate = (timestamp) => new Intl.DateTimeFormat('ja-JP', {month:'numeric', day:'numeric', hour:'2-digit', minute:'2-digit'}).format(new Date(timestamp));
+
+function readHistory() {
+  try {
+    const value = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+    return Array.isArray(value) ? value.filter(x => x && [80,110,140].includes(x.bpm) && Number.isFinite(x.score)).slice(0, 12) : [];
+  } catch { return []; }
+}
+function saveHistory(history) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(history.slice(0, 12))); }
+  catch { /* Private browsing may not allow storage. */ }
+}
+function bestForTempo(tempo) {
+  return readHistory().filter(x => x.bpm === tempo).reduce((best,x) => Math.max(best,x.score), -1);
+}
+function clearProgress() {
+  progressEl.replaceChildren();
+  for(let i=0;i<TOTAL_BEATS;i++) {
+    const item = document.createElement('span');
+    item.className = 'beat-dot';
+    item.setAttribute('aria-hidden','true');
+    progressEl.appendChild(item);
+  }
+  progressEl.setAttribute('aria-label', `0 / ${TOTAL_BEATS} 拍`);
+}
+function updateProgress(count, complete=false) {
+  const dots = [...progressEl.children];
+  dots.forEach((dot,i) => {
+    dot.className = 'beat-dot';
+    if(i < count) dot.classList.add('is-played');
+    if(game && game.taps[i] !== null) dot.classList.add('is-hit');
+    if(complete && game) {
+      dot.classList.toggle('is-hit', game.taps[i] !== null);
+      dot.classList.toggle('is-missed', game.taps[i] === null);
+    }
+  });
+  $('progress-text').textContent = `${count} / ${TOTAL_BEATS} BEATS`;
+  progressEl.setAttribute('aria-label', `${count} / ${TOTAL_BEATS} 拍`);
+}
+function setStatus(status, message) { $('game-status').textContent=status; $('game-instruction').textContent=message; }
+function setPad(label, display, subtitle) { $('tap-label').textContent=label; $('tap-display').textContent=display; $('tap-subtitle').textContent=subtitle; }
+function resetInterface() {
+  cancelGame();
+  tapPad.disabled = true;
+  tapPad.classList.remove('is-active','is-tapped');
+  document.querySelector('.game-card').classList.remove('is-playing');
+  buttons.forEach(button => {button.disabled=false;});
+  $('game-error').hidden=true;
+  startButton.hidden=false;
+  startButton.disabled=false;
+  startButton.textContent='診断スタート ↗';
+  resetButton.hidden=true;
+  setStatus('準備OK','4拍のカウントを聴いたら、音に合わせて16回タップ！');
+  setPad('READY?','♪','音に合わせてタップ');
+  $('tap-feedback').textContent='スタートを押すと音が鳴ります';
+  $('tempo-indicator').textContent=`${bpm} BPM`;
+  $('result-card').hidden=true;
+  clearProgress();
+}
+function cancelGame() {
+  runToken++;
+  if(animationId) { cancelAnimationFrame(animationId); animationId=0; }
+  if(game?.oscillators) {
+    for(const o of game.oscillators) { try { o.stop(); } catch { /* already stopped */ } }
+  }
+  game=null;
+}
+function setDifficulty(nextBpm) {
+  if(game) return;
+  bpm=nextBpm;
+  for(const button of buttons) {
+    const selected=Number(button.dataset.bpm)===bpm;
+    button.classList.toggle('is-selected',selected);
+    button.setAttribute('aria-pressed',String(selected));
+  }
+  $('tempo-indicator').textContent=`${bpm} BPM`;
+}
+buttons.forEach(button=>{
+  if (!button.hasAttribute('aria-pressed')) button.setAttribute('aria-pressed','false');
+  button.addEventListener('click',()=>setDifficulty(Number(button.dataset.bpm)));
+});
+
+function scheduleBeat(ctx, time, isCount, accent, gameState) {
+  // Web Audio starts every beat on its audio clock, independent of animation frames.
+  const oscillator=ctx.createOscillator();
+  const envelope=ctx.createGain();
+  const end=time+(isCount ? .075 : .065);
+  oscillator.type='sine';
+  oscillator.frequency.setValueAtTime(accent ? 1180 : (isCount?880:650),time);
+  oscillator.frequency.exponentialRampToValueAtTime(accent?650:400,end);
+  envelope.gain.setValueAtTime(0,time);
+  envelope.gain.linearRampToValueAtTime(accent?.25:.18,time+.003);
+  envelope.gain.exponentialRampToValueAtTime(.0001,end);
+  oscillator.connect(envelope);
+  envelope.connect(ctx.destination);
+  oscillator.start(time);
+  oscillator.stop(end+.01);
+  gameState.oscillators.push(oscillator);
+}
+function eventToAudioTime(ctx,event) {
+  // Convert the input event's high resolution performance timestamp to the audio clock.
+  // This does NOT fully remove speaker/headphone/touchscreen hardware latency.
+  const stamp=typeof ctx.getOutputTimestamp==='function' ? ctx.getOutputTimestamp() : null;
+  if(stamp && stamp.performanceTime>0 && stamp.contextTime>0) {
+    return stamp.contextTime+(event.timeStamp-stamp.performanceTime)/1000;
+  }
+  return ctx.currentTime+(event.timeStamp-performance.now())/1000;
+}
+async function startGame() {
+  resetInterface();
+  const token=runToken;
+  startButton.disabled=true;
+  startButton.textContent='音を準備中…';
+  try {
+    if (!audioContext || audioContext.state === 'closed') {
+      const Context=window.AudioContext||window.webkitAudioContext;
+      if(!Context) throw new Error('このブラウザは音声再生に対応していません。');
+      audioContext=new Context();
+    }
+    await audioContext.resume();
+    if(token!==runToken) return;
+    const ctx=audioContext;
+    const interval=60/bpm;
+    const startAt=ctx.currentTime+.25;
+    const state={ctx,bpm,interval,startAt,firstBeat:startAt+COUNT_IN*interval,taps:Array(TOTAL_BEATS).fill(null),extra:0,oscillators:[],lastDisplay:-99};
+    game=state;
+    for(let i=0;i<COUNT_IN+TOTAL_BEATS;i++) scheduleBeat(ctx,startAt+i*interval,i<COUNT_IN,i%4===0,state);
+    buttons.forEach(button=>button.disabled=true);
+    document.querySelector('.game-card').classList.add('is-playing');
+    startButton.hidden=true;
+    resetButton.hidden=false;
+    tapPad.disabled=true;
+    setStatus('カウント中','まずは4拍の音を聴いて、テンポをつかもう。');
+    $('tap-feedback').textContent='4・3・2・1 のあとにタップ開始！';
+    animationId=requestAnimationFrame(tick);
+  } catch(error) {
+    if(token!==runToken) return;
+    startButton.disabled=false;
+    startButton.textContent='診断スタート ↗';
+    const info=$('game-error');
+    info.hidden=false;
+    info.textContent=error?.message||'音声を開始できませんでした。もう一度お試しください。';
+  }
+}
+function tick() {
+  if(!game) return;
+  const ctx=game.ctx;
+  const t=ctx.currentTime;
+  const fromStart=(t-game.startAt)/game.interval;
+  const currentIndex=Math.floor(fromStart);
+  const inputOpenAt=game.firstBeat-Math.min(.23,game.interval*.44);
+  if(t>=inputOpenAt && tapPad.disabled) {
+    tapPad.disabled=false;
+    tapPad.classList.add('is-active');
+    setStatus('診断中！','音が鳴るたびに、真ん中の丸をタップ！');
+    $('tap-feedback').textContent='いい感じ！ 音のタイミングを狙ってね';
+  }
+  if(t<game.firstBeat) {
+    const left=Math.max(1, COUNT_IN-Math.max(0,currentIndex));
+    if(game.lastDisplay!==-left) {
+      game.lastDisplay=-left;
+      setPad('COUNT DOWN',String(left),'音をよく聴こう');
+    }
+  } else {
+    const done=Math.min(TOTAL_BEATS,Math.max(0,Math.floor((t-game.firstBeat)/game.interval)+1));
+    if(done!==game.lastDisplay) {
+      game.lastDisplay=done;
+      updateProgress(done);
+      setPad('TAP!',String(done),'音に合わせてタップ');
+    }
+  }
+  if(t > game.firstBeat+(TOTAL_BEATS-.55)*game.interval) {
+    finishGame();
+    return;
+  }
+  animationId=requestAnimationFrame(tick);
+}
+function hitBeat(event) {
+  if(!game || tapPad.disabled) return;
+  const t=eventToAudioTime(game.ctx,event);
+  const index=Math.round((t-game.firstBeat)/game.interval);
+  const windowSec=Math.min(.23,game.interval*.44);
+  if(index<0 || index>=TOTAL_BEATS || Math.abs(t-(game.firstBeat+index*game.interval))>windowSec) {
+    game.extra++;
+    $('tap-feedback').textContent='拍のタイミングを狙ってみよう！';
+    return;
+  }
+  if(game.taps[index]!==null) {game.extra++;return;}
+  const errorMs=(t-(game.firstBeat+index*game.interval))*1000;
+  game.taps[index]=errorMs;
+  tapPad.classList.remove('is-tapped');
+  void tapPad.offsetWidth;
+  tapPad.classList.add('is-tapped');
+  const message=Math.abs(errorMs)<35?'ピタッ！ ✨':(errorMs>0?'ちょっと遅め！':'ちょっと早め！');
+  $('tap-feedback').textContent=message;
+  const dot=progressEl.children[index];
+  if(dot) dot.classList.add('is-hit');
+}
+tapPad.addEventListener('pointerdown',(event)=>{event.preventDefault();hitBeat(event);});
+window.addEventListener('keydown',(event)=>{
+  if(event.code!=='Space'||event.repeat||!game||tapPad.disabled) return;
+  if(event.target?.matches?.('input, textarea, select')) return;
+  event.preventDefault();
+  hitBeat(event);
+});
+
+function finishGame() {
+  if(!game) return;
+  if(animationId) {cancelAnimationFrame(animationId);animationId=0;}
+  const current=game;
+  const windowMs=Math.min(.23,current.interval*.44)*1000;
+  const hits=current.taps.filter(Number.isFinite);
+  const score=Math.round(current.taps.reduce((total,error)=>total+(error===null?0:Math.max(0,100*(1-Math.abs(error)/windowMs))),0)/TOTAL_BEATS);
+  const meanAbs=hits.length ? hits.reduce((sum,x)=>sum+Math.abs(x),0)/hits.length : null;
+  const meanSigned=hits.length ? hits.reduce((sum,x)=>sum+x,0)/hits.length : null;
+  const result={id:Date.now(),time:Date.now(),score,bpm:current.bpm,meanAbs,meanSigned,hits:hits.length,extra:current.extra,errors:[...current.taps]};
+  const existing=readHistory();
+  const previousBest=existing.filter(x=>x.bpm===bpm).reduce((m,x)=>Math.max(m,x.score),-1);
+  saveHistory([result,...existing]);
+  lastResult=result;
+  updateProgress(TOTAL_BEATS,true);
+  tapPad.disabled=true;
+  tapPad.classList.remove('is-active');
+  buttons.forEach(button=>button.disabled=false);
+  document.querySelector('.game-card').classList.remove('is-playing');
+  setStatus('診断完了！','おつかれさま！診断結果をチェックしよう。');
+  setPad('FINISH!','★','結果を見てみよう');
+  $('tap-feedback').textContent='今回のリズムはどうだったかな？';
+  game=null;
+  renderResult(result,previousBest);
+  renderHistory();
+  $('result-card').hidden=false;
+  $('result-card').scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'start'});
+}
+function tierFor(score) {
+  if(score>=90) return ['リズムマスター','すごい！ビートを見事にキャッチ。次はもっと速いテンポにも挑戦！'];
+  if(score>=75) return ['ビートの達人','いい感じ！テンポをしっかりつかめているよ。'];
+  if(score>=55) return ['グッドグルーヴ','リズムに乗れてきた！もう一度やると伸びるかも。'];
+  return ['これからもっと上手に！','音をよく聴きながら、ゆったりテンポから挑戦してみよう。'];
+}
+function renderResult(result,previousBest) {
+  $('result-score').textContent=String(result.score);
+  const [rank,message]=tierFor(result.score);
+  $('result-rank').textContent=rank;
+  $('result-message').textContent=message;
+  $('best-label').textContent=result.score>previousBest ? '✦ このテンポの自己ベスト更新！' : `このテンポのベスト: ${Math.max(previousBest,result.score)}点`;
+  $('metric-error').innerHTML=`${timeFormat(result.meanAbs)} <em>ms</em>`;
+  const bias=result.meanSigned===null?'測定なし':result.meanSigned>15?'遅め':result.meanSigned < -15?'早め':'ほぼピッタリ';
+  $('metric-bias').textContent=bias;
+  $('metric-hit').innerHTML=`${result.hits} <em>/16</em>`;
+  const container=$('timing-chart');
+  container.replaceChildren();
+  result.errors.forEach((error,i)=>{
+    const item=document.createElement('div');
+    item.className='chart-beat';
+    const track=document.createElement('div');track.className='chart-track';
+    const axis=document.createElement('span');axis.className='chart-center-line';track.appendChild(axis);
+    const marker=document.createElement('span');
+    marker.className='chart-marker'+(error===null?' is-missing':'');
+    if(error!==null) marker.style.left=`${50+Math.max(-46,Math.min(46,error/230*46))}%`;
+    else marker.style.left='50%';
+    track.appendChild(marker);
+    const label=document.createElement('small');label.textContent=String(i+1);
+    item.append(track,label);
+    item.title=error===null ? `${i+1}拍目: ミス` : `${i+1}拍目: ${Math.round(error)>0?'+':''}${Math.round(error)}ms`;
+    container.appendChild(item);
+  });
+  container.setAttribute('aria-label',`16拍のタイミング。${result.hits}拍ヒット、平均誤差${timeFormat(result.meanAbs)}ミリ秒。`);
+  const text=`リズピタでリズム感診断！ 🥁\n${result.bpm}BPMで ${result.score}点 / 100点 ✨\n称号：${rank}\nあなたは何点？ #リズピタ #リズム感診断`;
+  const address=location.origin+location.pathname;
+  $('share-x').href=`https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(address)}`;
+}
+async function shareResult() {
+  if(!lastResult) return;
+  const rank=tierFor(lastResult.score)[0];
+  const text=`リズピタでリズム感診断！ 🥁\n${lastResult.bpm}BPMで ${lastResult.score}/100点！\n称号：${rank}\n#リズピタ #リズム感診断`;
+  const url=location.origin+location.pathname;
+  if(navigator.share) {
+    try {await navigator.share({title:'リズピタ｜リズム感診断',text,url});return;} catch(error) {if(error.name==='AbortError') return;}
+  }
+  try {await navigator.clipboard.writeText(`${text}\n${url}`);$('share-button').textContent='コピーしました ✓';setTimeout(()=>$('share-button').textContent='結果をシェア ↗',2000);}
+  catch { $('share-button').textContent='Xに投稿ボタンをご利用ください'; }
+}
+function renderHistory() {
+  const history=readHistory();
+  const container=$('history-list');container.replaceChildren();
+  if(!history.length) {const p=document.createElement('p');p.className='history-empty';p.textContent='最初の診断結果がここに表示されます。';container.appendChild(p);return;}
+  const bests={}; for(const item of history) bests[item.bpm]=Math.max(bests[item.bpm]??-1,item.score);
+  for(const item of history.slice(0,6)) {
+    const row=document.createElement('div');row.className='history-row';
+    const info=document.createElement('span');info.className='history-tempo';info.textContent=`${item.bpm} BPM`;
+    const detail=document.createElement('span');detail.className='history-date';detail.textContent=humanDate(item.time);
+    const score=document.createElement('strong');score.textContent=`${item.score} 点`;
+    const left=document.createElement('div');left.className='history-meta';left.append(info,detail);
+    if(bests[item.bpm]===item.score) {const trophy=document.createElement('span');trophy.className='history-best';trophy.textContent='BEST';left.append(trophy);}
+    row.append(left,score);container.appendChild(row);
+  }
+}
+startButton.addEventListener('click',startGame);
+resetButton.addEventListener('click',resetInterface);
+$('retry-button').addEventListener('click',()=>{
+  resetInterface();document.querySelector('.game-card').scrollIntoView({behavior:'smooth',block:'center'});
+});
+$('share-button').addEventListener('click',shareResult);
+clearProgress();
+renderHistory();
+
+</script>
+</body>
+</html>
