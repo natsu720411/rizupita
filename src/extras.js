@@ -1,5 +1,6 @@
 
 import './extras.css';
+import {scoreBeats} from './rhythm-core.js';
 
 const byId=(id)=>document.getElementById(id);
 const latencyKey='rizupita-latency-ms';
@@ -159,6 +160,7 @@ function frame(){
 function tapMode(event){
   if(!state||modeTap.disabled)return;
   const time=getEventTime(event,state.ctx);
+  if(time<state.start-.25 || time>state.end) return;
   if(state.mode==='memory'&&time<state.start+8*state.interval){return;}
   const windowSec=Math.min(.23,state.interval*.44);
   let best=null,diff=Infinity;
@@ -176,10 +178,9 @@ function finishMode(){
   if(!state)return;
   const result=state;
   const ok=result.targets.filter(x=>Number.isFinite(x.hit));
-  const windowMs=Math.min(.23,result.interval*.44)*1000;
-  const sum=result.targets.reduce((total,x)=>total+(x.hit===null?0:Math.max(0,1-Math.abs(x.hit)/windowMs)),0);
-  const score=Math.max(0,Math.round(sum/result.targets.length*100-result.extra*4));
-  const average=ok.length?Math.round(ok.reduce((a,x)=>a+Math.abs(x.hit),0)/ok.length):null;
+  const assessed=scoreBeats(result.targets.map(target=>target.hit),result.bpm,result.extra,4);
+  const score=assessed.score;
+  const average=assessed.meanAbs===null?null:Math.round(assessed.meanAbs);
   const modeName=specs[result.mode].title;
   let message=modeName+'：'+score+'点！　平均ズレ '+(average??'—')+'ms（'+ok.length+'/'+result.targets.length+'拍成功）';
   if(result.mode!=='practice'){

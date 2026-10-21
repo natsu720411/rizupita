@@ -1,6 +1,7 @@
 import './style.css';
 import './extras.js';
 import './analytics.js';
+import {nearestBeatIndex,scoreBeats,rankResults} from './rhythm-core.js';
 
 const $ = (id) => document.getElementById(id);
 const buttons = [...document.querySelectorAll('.difficulty')];
@@ -24,11 +25,11 @@ const humanDate = (timestamp) => new Intl.DateTimeFormat('ja-JP', {month:'numeri
 function readHistory() {
   try {
     const value = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-    return Array.isArray(value) ? value.filter(x => x && [80,110,140].includes(x.bpm) && Number.isFinite(x.score)).slice(0, 12) : [];
+    return Array.isArray(value) ? value.filter(x => x && [80,110,140].includes(x.bpm) && Number.isFinite(x.score) && x.score >= 0 && x.score <= 100 && Number.isFinite(x.time)).slice(0, 60) : [];
   } catch { return []; }
 }
 function saveHistory(history) {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(history.slice(0, 12))); }
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(history.slice(0, 60))); }
   catch { /* Private browsing may not allow storage. */ }
 }
 function bestForTempo(tempo) {
@@ -76,6 +77,7 @@ function resetInterface() {
   $('tap-feedback').textContent='スタートを押すと音が鳴ります';
   $('tempo-indicator').textContent=`${bpm} BPM`;
   $('result-card').hidden=true;
+  $('result-card').classList.remove('is-celebrating');
   clearProgress();
 }
 function cancelGame() {
@@ -200,9 +202,8 @@ function hitBeat(event) {
   if(!game || tapPad.disabled) return;
   const adjustment=typeof window.rizupitaGetLatencyMs==='function' ? window.rizupitaGetLatencyMs() : 0;
   const t=eventToAudioTime(game.ctx,event)-adjustment/1000;
-  const index=Math.round((t-game.firstBeat)/game.interval);
-  const windowSec=Math.min(.23,game.interval*.44);
-  if(index<0 || index>=TOTAL_BEATS || Math.abs(t-(game.firstBeat+index*game.interval))>windowSec) {
+  const index=nearestBeatIndex(t,game.firstBeat,game.interval,TOTAL_BEATS);
+  if(index<0) {
     game.extra++;
     $('tap-feedback').textContent='拍のタイミングを狙ってみよう！';
     return;
@@ -221,7 +222,7 @@ function hitBeat(event) {
 tapPad.addEventListener('pointerdown',(event)=>{event.preventDefault();hitBeat(event);});
 window.addEventListener('keydown',(event)=>{
   if(event.code!=='Space'||event.repeat||!game||tapPad.disabled) return;
-  if(event.target?.matches?.('input, textarea, select')) return;
+  if(event.target?.closest?.('button,a,input,textarea,select')) return;
   event.preventDefault();
   hitBeat(event);
 });
@@ -230,12 +231,8 @@ function finishGame() {
   if(!game) return;
   if(animationId) {cancelAnimationFrame(animationId);animationId=0;}
   const current=game;
-  const windowMs=Math.min(.23,current.interval*.44)*1000;
-  const hits=current.taps.filter(Number.isFinite);
-  const score=Math.round(current.taps.reduce((total,error)=>total+(error===null?0:Math.max(0,100*(1-Math.abs(error)/windowMs))),0)/TOTAL_BEATS);
-  const meanAbs=hits.length ? hits.reduce((sum,x)=>sum+Math.abs(x),0)/hits.length : null;
-  const meanSigned=hits.length ? hits.reduce((sum,x)=>sum+x,0)/hits.length : null;
-  const result={id:Date.now(),time:Date.now(),score,bpm:current.bpm,meanAbs,meanSigned,hits:hits.length,extra:current.extra,errors:[...current.taps]};
+  const {score,hits,meanAbs,meanSigned}=scoreBeats(current.taps,current.bpm,current.extra,2);
+  const result={id:Date.now(),time:Date.now(),score,bpm:current.bpm,meanAbs,meanSigned,hits,extra:current.extra,errors:[...current.taps]};
   const existing=readHistory();
   const previousBest=existing.filter(x=>x.bpm===bpm).reduce((m,x)=>Math.max(m,x.score),-1);
   saveHistory([result,...existing]);
@@ -252,8 +249,14 @@ function finishGame() {
   renderResult(result,previousBest);
   window.dispatchEvent(new CustomEvent("rizupita:result",{detail:{result,rank:tierFor(result.score)[0]}}));
   window.dispatchEvent(new CustomEvent("rizupita:analytics",{detail:{name:"diagnosis_complete",params:{tempo:result.bpm,score:result.score}}}));
+  selectedRankingTempo=result.bpm;
+  renderLeaderboard();
   renderHistory();
   $('result-card').hidden=false;
+  animateResultScore(result.score);
+  $('result-card').classList.remove('is-celebrating');
+  void $('result-card').offsetWidth;
+  $('result-card').classList.add('is-celebrating');
   $('result-card').scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'start'});
 }
 function tierFor(score) {
@@ -268,6 +271,7 @@ function renderResult(result,previousBest) {
   $('result-rank').textContent=rank;
   $('result-message').textContent=message;
   $('best-label').textContent=result.score>previousBest ? '✦ このテンポの自己ベスト更新！' : `このテンポのベスト: ${Math.max(previousBest,result.score)}点`;
+  $('achievement-message').textContent=result.hits===16 && result.score===100?'🏆 パーフェクト！16拍すべて成功！':result.score>=90?'🌟 リズムマスター認定！':result.score>previousBest?'🎉 自己ベストを更新しました！':result.hits===16?'👏 16拍すべてタップ成功！':'次は自己ベストを目指そう！';
   $('metric-error').innerHTML=`${timeFormat(result.meanAbs)} <em>ms</em>`;
   const bias=result.meanSigned===null?'測定なし':result.meanSigned>15?'遅め':result.meanSigned < -15?'早め':'ほぼピッタリ';
   $('metric-bias').textContent=bias;
@@ -281,7 +285,8 @@ function renderResult(result,previousBest) {
     const axis=document.createElement('span');axis.className='chart-center-line';track.appendChild(axis);
     const marker=document.createElement('span');
     marker.className='chart-marker'+(error===null?' is-missing':'');
-    if(error!==null) marker.style.left=`${50+Math.max(-46,Math.min(46,error/230*46))}%`;
+    const windowMs=Math.min(.23,(60/result.bpm)*.44)*1000;
+    if(error!==null) marker.style.left=`${50+Math.max(-46,Math.min(46,error/windowMs*46))}%`;
     else marker.style.left='50%';
     track.appendChild(marker);
     const label=document.createElement('small');label.textContent=String(i+1);
@@ -320,6 +325,58 @@ function renderHistory() {
     row.append(left,score);container.appendChild(row);
   }
 }
+
+let selectedRankingTempo=110;
+function renderLeaderboard(){
+  const history=readHistory();
+  const ranked=rankResults(history,selectedRankingTempo,5);
+  const list=$('leaderboard-list');list.replaceChildren();
+  $('leaderboard-stats').textContent=history.filter(item=>item.bpm===selectedRankingTempo).length+'回の記録';
+  document.querySelectorAll('[data-rank-bpm]').forEach(button=>{
+    const selected=Number(button.dataset.rankBpm)===selectedRankingTempo;
+    button.classList.toggle('is-active',selected);
+    button.setAttribute('aria-pressed',String(selected));
+  });
+  if(!ranked.length){
+    const row=document.createElement('li');row.className='leaderboard-empty';
+    row.textContent='このテンポの記録はまだありません。診断するとここに表示されます。';
+    list.append(row);return;
+  }
+  ranked.forEach((entry,index)=>{
+    const row=document.createElement('li');row.className='leaderboard-item';
+    const medal=document.createElement('span');medal.className='leaderboard-medal';
+    medal.textContent=['🥇','🥈','🥉'][index] || String(index+1)+'位';
+    const detail=document.createElement('span');detail.className='leaderboard-entry';
+    const title=document.createElement('strong');title.textContent=index===0?'自己ベスト':'第'+(index+1)+'位';
+    const info=document.createElement('small');info.textContent=humanDate(entry.time)+' ・ 平均誤差 '+timeFormat(entry.meanAbs)+'ms';
+    detail.append(title,info);
+    const points=document.createElement('strong');points.className='leaderboard-score';points.textContent=entry.score+'点';
+    row.append(medal,detail,points);list.append(row);
+  });
+}
+document.querySelectorAll('[data-rank-bpm]').forEach(button=>button.addEventListener('click',()=>{
+  selectedRankingTempo=Number(button.dataset.rankBpm);
+  renderLeaderboard();
+}));
+function animateResultScore(score){
+  const target=$('result-score');
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){target.textContent=String(score);return;}
+  const started=performance.now();
+  function frame(now){
+    if($('result-card').hidden || lastResult?.score!==score)return;
+    const progress=Math.min(1,(now-started)/700);
+    target.textContent=String(Math.round(score*(1-Math.pow(1-progress,3))));
+    if(progress<1)requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}
+document.addEventListener('visibilitychange',()=>{
+  if(document.hidden && game){
+    resetInterface();
+    setStatus('一時中断','画面を切り替えたため診断を中止しました。再度スタートしてください。');
+  }
+});
+
 startButton.addEventListener('click',startGame);
 resetButton.addEventListener('click',resetInterface);
 $('retry-button').addEventListener('click',()=>{
@@ -328,3 +385,4 @@ $('retry-button').addEventListener('click',()=>{
 $('share-button').addEventListener('click',shareResult);
 clearProgress();
 renderHistory();
+renderLeaderboard();
