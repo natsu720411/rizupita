@@ -37,3 +37,14 @@
 .related-card .button{flex-shrink:0}
 @media (max-width:850px){.modes-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.mode-player-header{flex-direction:column}.related-card{flex-direction:column;align-items:flex-start}}
 @media (max-width:520px){.modes-section{padding:58px 0}.modes-grid{gap:9px}.mode-card{padding:16px 11px;gap:8px}.mode-card strong{font-size:13px}.mode-card small{font-size:11px}.mode-icon{width:44px;height:44px;font-size:24px}.mode-player{padding:22px 14px}.mode-player-header h3{font-size:20px}.related-card{padding:26px 20px}.related-card h2{font-size:20px}.latency-setting{margin:16px 0 8px}}
+
+
+.new-games-shortcut{padding:6px 0 35px;scroll-margin-top:20px}
+.new-games-banner{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:25px 29px;border-radius:24px;background:linear-gradient(110deg,#f7eeff,#eef2ff);border:2px solid #e6dcfb;box-shadow:0 12px 28px rgba(85,75,185,.08)}
+.new-games-content{min-width:0}
+.new-games-badge{display:inline-flex;align-items:center;border-radius:40px;padding:5px 12px;background:#5d50dd;color:white;font-size:11px;letter-spacing:.05em;font-weight:800}
+.new-games-banner h2{font-size:21px;line-height:1.5;color:#272956;margin:8px 0 6px}
+.new-games-banner p{font-size:13px;line-height:1.75;color:#5d6287;margin:0}
+.new-games-link{flex-shrink:0;white-space:nowrap}
+#modes{scroll-margin-top:18px}
+@media(max-width:700px){.new-games-shortcut{padding:0 0 22px}.new-games-banner{flex-direction:column;align-items:stretch;padding:18px;gap:14px;border-radius:19px}.new-games-banner h2{font-size:17px}.new-games-banner p{font-size:12px}.new-games-link{width:100%}.nav-cta{font-size:11px}}
