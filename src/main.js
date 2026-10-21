@@ -319,19 +319,19 @@ function renderResult(result,previousBest) {
     container.appendChild(item);
   });
   container.setAttribute('aria-label',`16拍のタイミング。${result.hits}拍ヒット、平均誤差${timeFormat(result.meanAbs)}ミリ秒。`);
-  const text=`リズピタでリズム感診断！ 🥁\n${result.bpm}BPMで ${result.score}点 / 100点 ✨\n称号：${rank}\nあなたは何点？ #リズピタ #リズム感診断`;
-  const address=location.origin+location.pathname;
+  const text=`リズム感診断で${result.score}/100点！🥁\n${result.bpm} BPM・称号：${rank}\nあなたは何点？一緒に挑戦しよう！ #リズピタ #リズム感診断`;
+  const address=location.origin+location.pathname+'#diagnosis';
   $('share-x').href=`https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(address)}`;
 }
 async function shareResult() {
   if(!lastResult) return;
   const rank=tierFor(lastResult.score)[0];
-  const text=`リズピタでリズム感診断！ 🥁\n${lastResult.bpm}BPMで ${lastResult.score}/100点！\n称号：${rank}\n#リズピタ #リズム感診断`;
-  const url=location.origin+location.pathname;
+  const text=`リズム感診断で${lastResult.score}/100点！🥁\n${lastResult.bpm} BPM・称号：${rank}\n平均ズレ：${Number.isFinite(lastResult.meanAbs)?Math.round(lastResult.meanAbs)+'ms':'—'}\nあなたは何点？挑戦してみて！ #リズピタ #リズム感診断`;
+  const url=location.origin+location.pathname+'#diagnosis';
   if(navigator.share) {
     try {await navigator.share({title:'リズピタ｜リズム感診断',text,url});return;} catch(error) {if(error.name==='AbortError') return;}
   }
-  try {await navigator.clipboard.writeText(`${text}\n${url}`);$('share-button').textContent='コピーしました ✓';setTimeout(()=>$('share-button').textContent='結果をシェア ↗',2000);}
+  try {await navigator.clipboard.writeText(`${text}\n${url}`);$('share-button').textContent='コピーしました ✓';setTimeout(()=>$('share-button').textContent='友だちに結果をシェア ↗',2000);}
   catch { $('share-button').textContent='Xに投稿ボタンをご利用ください'; }
 }
 function renderHistory() {

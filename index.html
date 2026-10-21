@@ -12,12 +12,16 @@
   <meta property="og:site_name" content="リズピタ" />
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="ja_JP" />
-  <meta property="og:title" content="リズピタ｜タップするだけの無料リズム感診断" />
-  <meta property="og:description" content="リズム感診断・日替わりチャレンジ・成長グラフ。無料で16拍タップして得点とタイミングのズレを確認！" />
-  <meta property="og:image" content="https://rizupita.vercel.app/og.svg" />
+  <meta property="og:title" content="あなたのリズム感、何点？｜リズピタ無料診断" />
+  <meta property="og:description" content="16回タップするだけでリズム感を100点満点で診断！タイミングのズレも確認できる無料ゲーム。友だちも挑戦してみてね。" />
+  <meta property="og:image" content="https://rizupita.vercel.app/og.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:type" content="image/png" />
+  <meta name="twitter:image" content="https://rizupita.vercel.app/og.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="リズピタ｜無料リズム感診断" />
-  <meta name="twitter:description" content="16回のタップで、あなたのリズム感を100点満点でチェック！" />
+  <meta name="twitter:title" content="あなたのリズム感、何点？｜リズピタ" />
+  <meta name="twitter:description" content="リズム感は何点？16拍タップでスコアとズレを測ろう。無料・登録不要！" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="manifest" href="/manifest.webmanifest" />
   <meta name="color-scheme" content="light" />
@@ -135,7 +139,8 @@
   <div class="insight-details"><span id="insight-early">前半：—</span><span id="insight-late">後半：—</span></div>
 </section>
             <div class="chart-section"><div class="chart-head"><h4>タップのタイミング</h4><span>中心がピッタリ</span></div><div class="timing-chart" id="timing-chart" role="img" aria-label="各拍の早い・遅いを表すグラフ"></div><div class="chart-scale"><span>早い</span><span>ピッタリ</span><span>遅い</span></div></div>
-            <div class="result-actions"><button class="button button-secondary" id="save-result-image" type="button">結果画像を保存 ↓</button><button class="button button-secondary" id="share-result-image" type="button">結果画像を共有 ↗</button><button class="button button-primary" id="share-button" type="button">結果をシェア <span aria-hidden="true">↗</span></button><a class="button button-outline" id="share-x" href="https://x.com/intent/tweet" target="_blank" rel="noopener noreferrer">Xに投稿 <span aria-hidden="true">↗</span></a><button class="button button-secondary" id="retry-button" type="button">もう一度 ↺</button></div>
+            <div class="result-share-invitation"><strong>あなたは何点？友だちにも挑戦してもらおう！</strong><p>結果の画像を保存してSNSに添付したり、診断へのリンクを送ったりできます。相手に診断データは公開されません。</p></div>
+            <div class="result-actions"><button class="button button-secondary" id="save-result-image" type="button">結果画像を保存 ↓</button><button class="button button-secondary" id="share-result-image" type="button">結果画像を共有 ↗</button><button class="button button-primary" id="share-button" type="button">友だちに結果をシェア <span aria-hidden="true">↗</span></button><a class="button button-outline" id="share-x" href="https://x.com/intent/tweet" target="_blank" rel="noopener noreferrer">Xに投稿 <span aria-hidden="true">↗</span></a><button class="button button-secondary" id="retry-button" type="button">もう一度 ↺</button></div>
             <p class="result-disclaimer">※ 点数はゲーム用の参考値です。端末・ブラウザ・イヤホンによる音声や入力の遅延が結果に影響します。同じ環境での自己ベスト更新をおすすめします。</p>
           </section>
           <section class="leaderboard-card" id="leaderboard" aria-labelledby="leaderboard-title">
@@ -198,6 +203,15 @@
         </div>
         <p class="rhythm-guide-note">点数はゲーム上の参考値です。端末・Bluetoothイヤホン・タップ入力の遅延が結果に影響するため、なるべく同じ環境で比べてください。</p>
       </section>
+
+<section class="seo-resources container" aria-labelledby="seo-resources-title" id="practice-guides">
+  <div class="section-head"><div class="section-kicker">IMPROVE YOUR RHYTHM</div><h2 id="seo-resources-title">リズム感が気になる人へ。無料の練習ガイド</h2><p>診断結果を見て、次に何を練習するか迷ったときに役立つ2つの解説です。</p></div>
+  <div class="seo-resource-grid">
+    <article class="seo-resource-card"><div class="seo-resource-icon" aria-hidden="true">♫</div><div><span class="mini-label">初心者向け</span><h3><a href="/guide/rhythm-training.html">リズム感を鍛える方法：5つの練習ステップ</a></h3><p>80 BPMの基礎から裏拍、無音テンポまで、無料で試せる練習を順番に紹介します。</p><a class="seo-resource-link" href="/guide/rhythm-training.html">練習のコツを読む ↗</a></div></article>
+    <article class="seo-resource-card"><div class="seo-resource-icon" aria-hidden="true">↔</div><div><span class="mini-label">タップ分析</span><h3><a href="/guide/tap-timing.html">タップが早い・遅い原因と直し方</a></h3><p>「40ms早い」はどういう意味？平均の偏りとズレの違い、端末の遅延を解説します。</p><a class="seo-resource-link" href="/guide/tap-timing.html">ズレの見方を読む ↗</a></div></article>
+  </div>
+  <p class="seo-resource-more">ほかにも <a href="/guide/offbeat.html">裏拍練習</a>・<a href="/guide/silence.html">無音テンポ</a>・<a href="/guide/memory.html">リズム記憶</a>・<a href="/guide/daily.html">日替わりチャレンジ</a> の遊び方を確認できます。</p>
+</section>
       <section class="features-section" id="features"><div class="container"><div class="section-head"><div class="section-kicker">WHY RIZUPITA?</div><h2>リズム感が、もっと楽しくなる。</h2><p>ちょっとした空き時間に、音を楽しみながらチャレンジ。</p></div><div class="feature-grid"><article class="feature-panel feature-highlight"><div class="feature-emoji">✦</div><h3>自分のリズムが見える</h3><p>ただの点数だけじゃなく、早い？遅い？どれくらいズレた？がひと目でわかる。</p><div class="feature-mini-viz"><span>♪</span><i></i><i></i><i></i><i></i><i></i><i></i></div></article><article class="feature-panel"><div class="feature-emoji">⚡</div><h3>サクッと無料で遊べる</h3><p>登録不要・課金なし。ブラウザを開けばそのまま遊べるから、友だちとも比べやすい。</p></article><article class="feature-panel"><div class="feature-emoji">↗</div><h3>ベストスコアに挑戦</h3><p>記録はこの端末に保存。昨日の自分を越える楽しさを味わおう。</p></article></div></div></section>
 
 
@@ -210,6 +224,11 @@
     </main>
     <footer class="site-footer"><div class="container footer-inner"><a class="brand brand-footer" href="#top"><span class="brand-mark" aria-hidden="true">♪</span> リズピタ<span class="brand-dot">.</span></a><p>リズムが合うと、ちょっと嬉しい。</p><a href="/privacy.html" class="footer-privacy">データの取り扱い</a><small>© 2026 リズピタ / 無料リズム感診断</small></div></footer>
   </div>
+  <nav class="mobile-quick-nav" aria-label="スマホ用のクイックメニュー">
+    <a href="#diagnosis"><span aria-hidden="true">♪</span><span>診断</span></a>
+    <a href="#daily"><span aria-hidden="true">☀</span><span>今日の挑戦</span></a>
+    <a href="#modes"><span aria-hidden="true">♫</span><span>ゲーム</span></a>
+  </nav>
   <script type="module" src="/src/main.js"></script>
 </body>
 </html>

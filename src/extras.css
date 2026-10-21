@@ -187,3 +187,32 @@
 .daily-card{border:2px solid #cabaff}
 @media(max-width:700px){#daily{scroll-margin-top:77px}.hero-daily-promote{margin-top:18px;padding:11px 12px}.hero-daily-promote strong{font-size:12px}.daily-section{padding:8px 0 20px}.daily-card{padding:22px 18px}}
 @media(max-width:400px){.nav-cta{font-size:11px;padding:10px 12px}.hero-daily-promote a{font-size:12px}}
+
+/* Discoverability: original practice articles, share invitation and mobile quick links. */
+.seo-resources{padding:40px 0 58px}
+.seo-resource-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.seo-resource-card{display:flex;align-items:flex-start;gap:16px;padding:25px;border:1px solid #e7e1fa;background:#fff;border-radius:21px}
+.seo-resource-icon{flex:0 0 46px;display:grid;place-items:center;height:46px;border-radius:13px;background:#eeeaff;color:#6d57d8;font-size:24px}
+.seo-resource-card h3{font-size:18px;line-height:1.65;margin:7px 0 12px;color:#312d59}
+.seo-resource-card h3 a{color:inherit;text-decoration:none}
+.seo-resource-card h3 a:hover{text-decoration:underline;text-underline-offset:3px}
+.seo-resource-card p{color:#6f7190;font-size:13px;line-height:1.85;margin:0 0 11px}
+.seo-resource-link{font-weight:800;color:#6557c9;text-decoration:underline;text-underline-offset:4px;font-size:13px}
+.seo-resource-more{font-size:13px;line-height:1.9;margin-top:18px;color:#626783}
+.seo-resource-more a{color:#6358c8;text-decoration:underline;text-underline-offset:3px}
+.result-share-invitation{padding:17px 19px;border-radius:17px;background:#f8f5ff;border:1px solid #e9defa;margin:20px 0}
+.result-share-invitation strong{color:#3b3268;font-size:15px}
+.result-share-invitation p{font-size:12px;color:#6c6d89;line-height:1.85;margin:6px 0 0}
+.mobile-quick-nav{display:none}
+@media(max-width:750px){
+  .seo-resource-grid{grid-template-columns:1fr}.seo-resources{padding:38px 0}
+  .seo-resource-card{padding:20px 17px}.seo-resource-card h3{font-size:16px}
+}
+@media(max-width:700px){
+  body{padding-bottom:calc(66px + env(safe-area-inset-bottom))}
+  .mobile-quick-nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));position:fixed;left:0;right:0;bottom:0;z-index:60;min-height:66px;padding:7px 10px calc(7px + env(safe-area-inset-bottom));background:#fffefaee;border-top:1px solid #ddd9f1;box-shadow:0 -7px 26px #1d21501c;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+  .mobile-quick-nav a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:48px;color:#4e477c;text-decoration:none;border-radius:13px;font-weight:800;font-size:11px}
+  .mobile-quick-nav a span:first-child{font-size:20px;line-height:1.05;color:#6a5bcc}
+  .mobile-quick-nav a:focus-visible{outline:3px solid #7866e8;outline-offset:2px}
+  .mobile-quick-nav a:active{background:#f1ecff}
+}

@@ -315,7 +315,7 @@ function createImage(){
   ctx.beginPath();ctx.arc(needlePosition,396.5,13,0,Math.PI*2);
   ctx.fillStyle='#fff';ctx.fill();ctx.lineWidth=5;ctx.strokeStyle=hasData&&result.meanSigned<-.5?'#4387df':hasData&&result.meanSigned>.5?'#ea7186':'#39a16d';ctx.stroke();
   ctx.font='bold 18px sans-serif';ctx.fillStyle='#e8e5fb';ctx.fillText('早い',left,445);ctx.fillText('0 ms',center-22,445);ctx.fillText('遅い',left+width-48,445);
-  ctx.font='22px sans-serif';ctx.fillStyle='#d5cff3';ctx.fillText('同じテンポで自己ベストに挑戦！',665,498);
+  ctx.font='22px sans-serif';ctx.fillStyle='#d5cff3';ctx.fillText('あなたは何点？チャレンジしてみて！',665,498);
   ctx.fillStyle='#f6f2ff';ctx.font='bold 26px sans-serif';ctx.fillText('rizupita.vercel.app',80,589);
   ctx.textAlign='right';ctx.font='22px sans-serif';ctx.fillStyle='#e2dafa';ctx.fillText('#リズピタ #リズム感診断',1125,588);
   return canvas;
@@ -339,7 +339,7 @@ async function imageAction(share){
     if(share&&navigator.share&&typeof File==='function'){
       const file=new File([blob],'rizupita-score.png',{type:'image/png'});
       if(navigator.canShare?.({files:[file]})){
-        try{await navigator.share({title:'リズピタの診断結果',text:'リズピタでリズム感を診断しました！ #リズピタ',files:[file],url:location.href});return;}
+        try{await navigator.share({title:'リズピタの診断結果',text:'リズム感診断で'+latest.result.score+'点！ あなたは何点？ #リズピタ',files:[file],url:location.origin+'/#diagnosis'});return;}
         catch(error){if(error?.name==='AbortError')return;}
       }
     }
