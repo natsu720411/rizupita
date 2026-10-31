@@ -2,6 +2,7 @@ import {
   localDayKey,dailyChallenge,dayDistance,analyzeTiming,levelInfo,experienceFor,
   growthSeries,applyDailyCompletion
 } from './engagement-core.js';
+import {validBpm,badgeSpecs,earnedBadges} from './upgrade-core.js';
 
 const get=id=>document.getElementById(id);
 const PROFILE_KEY='rizupita-progression-v1';
@@ -19,7 +20,7 @@ function safeWrite(key,value){
 function history(){
   try{
     const data=JSON.parse(safeRead(HISTORY_KEY)||'[]');
-    return Array.isArray(data)?data.filter(x=>x&&tempoChoices.includes(x.bpm)&&Number.isFinite(x.time)&&Number.isFinite(x.score)):[];
+    return Array.isArray(data)?data.filter(x=>x&&validBpm(x.bpm)!==null&&Number.isFinite(x.time)&&Number.isFinite(x.score)):[];
   }catch{return [];}
 }
 function loadProfile(){
@@ -169,9 +170,37 @@ document.querySelectorAll('[data-growth-metric]').forEach(button=>button.addEven
   drawGrowth();sendEvent('growth_view',{tempo:growthBpm,metric:growthMetric});
 }));
 
+function renderBadges(){
+  const unlocked=earnedBadges(history(),profile);
+  get('achievement-count').textContent=Object.values(unlocked).filter(Boolean).length+' / '+badgeSpecs.length;
+  const root=get('achievement-grid');root.replaceChildren();
+  badgeSpecs.forEach(badge=>{
+    const earned=!!unlocked[badge.id];
+    const tile=document.createElement('article');
+    tile.className='achievement-badge'+(earned?' is-earned':' is-locked');
+    const icon=document.createElement('span');icon.className='achievement-icon';
+    icon.textContent=earned?badge.emoji:'🔒';icon.setAttribute('aria-hidden','true');
+    const info=document.createElement('div');
+    const title=document.createElement('strong');title.textContent=badge.label;
+    const hint=document.createElement('small');hint.textContent=earned?'獲得済み ✓':'条件：'+badge.hint;
+    info.append(title,hint);tile.append(icon,info);root.append(tile);
+  });
+}
+function ensureCustomGrowthBpm(value){
+  if([80,110,140].includes(value))return;
+  let custom=document.querySelector('[data-growth-custom]');
+  if(!custom){
+    custom=document.createElement('button');custom.type='button';custom.setAttribute('data-growth-custom','true');
+    custom.addEventListener('click',()=>{
+      growthBpm=Number(custom.dataset.growthBpm);drawGrowth();
+    });
+    document.querySelector('.growth-tempos').append(custom);
+  }
+  custom.dataset.growthBpm=String(value);custom.textContent=value+' BPM';
+}
 function saveProfile(){
   safeWrite(PROFILE_KEY,JSON.stringify(profile));
-  renderDaily();renderLevel();
+  renderDaily();renderLevel();renderBadges();
 }
 window.addEventListener('rizupita:result',event=>{
   const result=event.detail?.result;
@@ -182,12 +211,14 @@ window.addEventListener('rizupita:result',event=>{
     const daily=event.detail.daily;
     const next=applyDailyCompletion(profile,daily.day,result.score,daily.target);
     if(next.earned){next.xp+=50;sendEvent('daily_challenge_complete',{tempo:result.bpm,score:result.score});}
+    next.maxStreak=Math.max(Number(next.maxStreak)||0,next.streak||0);
     profile=next;
     get('daily-progress').textContent=next.earned?'今日のチャレンジ達成！ ボーナス50 XP！':'挑戦おつかれさま！';
   }
   saveProfile();
   renderInsight(result);
   growthBpm=result.bpm;
+  ensureCustomGrowthBpm(result.bpm);
   drawGrowth();
   if(levelInfo(profile.xp).level>previous){
     get('level-message').textContent='レベルアップ！ 次の称号にも挑戦しよう。';
@@ -199,8 +230,10 @@ window.addEventListener('rizupita:mode-result',event=>{
   if(!data||!Number.isFinite(data.score))return;
   const previous=levelInfo(profile.xp).level;
   profile.xp+=experienceFor(data.score,data.mode);
+  profile.modeCounts=profile.modeCounts||{};
+  profile.modeCounts[data.mode]=(Number(profile.modeCounts[data.mode])||0)+1;
   saveProfile();
   if(levelInfo(profile.xp).level>previous)get('level-message').textContent='レベルアップ！ おめでとう！';
 });
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)renderDaily();});
-renderLevel();renderDaily();drawGrowth();
+renderLevel();renderDaily();renderBadges();drawGrowth();

@@ -2,6 +2,7 @@
 import './extras.css';
 import {scoreBeats,normalizeInputTimeStamp} from './rhythm-core.js';
 import {createInstantMeter} from './timing-meter.js';
+import {validBpm} from './upgrade-core.js';
 
 const byId=(id)=>document.getElementById(id);
 const latencyKey='rizupita-latency-ms';
@@ -45,6 +46,23 @@ function updateModeBest() {
   }catch{label.textContent='ベストスコアを表示できません';}
 }
 modeTempo.addEventListener('change',()=>{updateModeBest();modeMeter.reset(Number(modeTempo.value));});
+function setModeTempo(value){
+  const bpm=validBpm(value);if(bpm===null){byId('mode-custom-feedback').textContent='60〜180の整数を入力してください';return false;}
+  if(state){byId('mode-custom-feedback').textContent='プレイが終わってから変更してください';return false;}
+  let option=[...modeTempo.options].find(o=>Number(o.value)===bpm);
+  if(!option){
+    option=document.createElement('option');option.value=String(bpm);option.textContent=bpm+' BPM（自由）';
+    const former=modeTempo.querySelector('[data-custom-bpm-option]');
+    if(former)former.remove();
+    option.setAttribute('data-custom-bpm-option','true');modeTempo.append(option);
+  }
+  modeTempo.value=String(bpm);byId('mode-custom-bpm').value=String(bpm);
+  byId('mode-custom-feedback').textContent=bpm+' BPM に設定しました ✓';
+  updateModeBest();modeMeter.reset(bpm);return true;
+}
+byId('mode-custom-apply').addEventListener('click',()=>setModeTempo(byId('mode-custom-bpm').value));
+byId('mode-custom-bpm').addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();setModeTempo(event.target.value);}});
+
 
 let mode='practice',state=null,context=null,rafId=0,token=0;
 const COUNT_IN=4;
@@ -55,6 +73,7 @@ function stopMode(quiet=false){
   if(rafId){cancelAnimationFrame(rafId);rafId=0;}
   if(state?.nodes){state.nodes.forEach(node=>{try{node.stop();}catch{}});}
   state=null;modeTap.disabled=true;modeTap.classList.remove('is-hit');
+  if(document.body.dataset.playFocus==='mode')delete document.body.dataset.playFocus;
   modeStart.hidden=false;modeStart.disabled=false;modeStop.hidden=true;
   byId('mode-share').hidden=true;
   setModeButtons(false);
@@ -80,6 +99,12 @@ function selectMode(next){
   modeMeter.reset(Number(modeTempo.value));
 }
 modeButtons.forEach(button=>button.addEventListener('click',()=>selectMode(button.dataset.mode)));
+window.addEventListener('rizupita:recommend-mode',event=>{
+  const info=event.detail;
+  if(!info||!specs[info.mode]||state)return;
+  selectMode(info.mode);
+  if(validBpm(info.bpm)!==null)setModeTempo(info.bpm);
+});
 function playTone(ctx,at,pitch,volume,nodes,duration=.075){
   const osc=ctx.createOscillator(),gain=ctx.createGain();
   osc.type='sine';
@@ -143,6 +168,8 @@ async function beginMode(){
       end=start+length*interval+.18;
     }
     state={mode:currentMode,ctx:context,start,interval,bpm,targets,nodes,extra:0,end,pattern,lastProgress:''};
+    document.body.dataset.playFocus='mode';document.body.classList.remove('focus-paused');
+    requestAnimationFrame(()=>byId('mode-player').scrollIntoView({behavior:'auto',block:'start'}));
     modeStart.hidden=true;modeStop.hidden=false;
     setModeButtons(true);
     modeTap.disabled=true;

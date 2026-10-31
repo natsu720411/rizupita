@@ -15,5 +15,26 @@
       "type": "image/svg+xml",
       "purpose": "any"
     }
+  ],
+  "id": "/",
+  "shortcuts": [
+    {
+      "name": "リズム感診断",
+      "short_name": "診断",
+      "url": "/#diagnosis",
+      "description": "16拍の無料リズム感テスト"
+    },
+    {
+      "name": "日替わりチャレンジ",
+      "short_name": "今日の挑戦",
+      "url": "/#daily",
+      "description": "今日のお題で遊ぶ"
+    },
+    {
+      "name": "リズムゲーム",
+      "short_name": "ゲーム",
+      "url": "/#modes",
+      "description": "4つのリズムゲームを遊ぶ"
+    }
   ]
 }

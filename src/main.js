@@ -4,6 +4,7 @@ import './analytics.js';
 import './engagement.js';
 import {nearestBeatIndex,scoreBeats,rankResults,normalizeInputTimeStamp} from './rhythm-core.js';
 import {createInstantMeter} from './timing-meter.js';
+import {validBpm,compareAttempts,recommendTraining,calibrationHint} from './upgrade-core.js';
 
 const $ = (id) => document.getElementById(id);
 const buttons = [...document.querySelectorAll('.difficulty')];
@@ -29,7 +30,7 @@ const humanDate = (timestamp) => new Intl.DateTimeFormat('ja-JP', {month:'numeri
 function readHistory() {
   try {
     const value = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-    return Array.isArray(value) ? value.filter(x => x && [80,110,140].includes(x.bpm) && Number.isFinite(x.score) && x.score >= 0 && x.score <= 100 && Number.isFinite(x.time)).slice(0, 60) : [];
+    return Array.isArray(value) ? value.filter(x => x && validBpm(x.bpm)!==null && Number.isFinite(x.score) && x.score >= 0 && x.score <= 100 && Number.isFinite(x.time)).slice(0, 60) : [];
   } catch { return []; }
 }
 function saveHistory(history) {
@@ -93,9 +94,10 @@ function cancelGame() {
     for(const o of game.oscillators) { try { o.stop(); } catch { /* already stopped */ } }
   }
   game=null;
+  if(document.body.dataset.playFocus==='diagnosis')delete document.body.dataset.playFocus;
 }
 function setDifficulty(nextBpm) {
-  if(game) return;
+  if(game||validBpm(nextBpm)===null)return;
   bpm=nextBpm;
   for(const button of buttons) {
     const selected=Number(button.dataset.bpm)===bpm;
@@ -103,6 +105,8 @@ function setDifficulty(nextBpm) {
     button.setAttribute('aria-pressed',String(selected));
   }
   $('tempo-indicator').textContent=`${bpm} BPM`;
+  if(![80,110,140].includes(bpm)){$('custom-bpm').value=String(bpm);$('custom-bpm-feedback').textContent='現在 '+bpm+' BPM（自由設定）';}
+  else $('custom-bpm-feedback').textContent='60〜180 BPM（1刻み）';
   diagnosisMeter.reset(bpm);
 }
 buttons.forEach(button=>{
@@ -110,6 +114,14 @@ buttons.forEach(button=>{
   button.addEventListener('click',()=>setDifficulty(Number(button.dataset.bpm)));
 });
 
+function applyCustomBpm(){
+  const next=validBpm($('custom-bpm').value);
+  if(next===null){$('custom-bpm-feedback').textContent='60〜180の整数を入力してください';return;}
+  if(game){$('custom-bpm-feedback').textContent='診断を終了してから変更してください';return;}
+  setDifficulty(next);$('custom-bpm-feedback').textContent=next+' BPM に設定しました ✓';
+}
+$('custom-bpm-apply').addEventListener('click',applyCustomBpm);
+$('custom-bpm').addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();applyCustomBpm();}});
 function scheduleBeat(ctx, time, isCount, accent, gameState) {
   // Web Audio starts every beat on its audio clock, independent of animation frames.
   const oscillator=ctx.createOscillator();
@@ -156,6 +168,8 @@ async function startGame({daily=null}={}) {
     const startAt=ctx.currentTime+.25;
     const state={ctx,bpm,interval,startAt,firstBeat:startAt+COUNT_IN*interval,taps:Array(TOTAL_BEATS).fill(null),extra:0,oscillators:[],lastDisplay:-99,daily};
     game=state;
+    document.body.dataset.playFocus='diagnosis';document.body.classList.remove('focus-paused');
+    requestAnimationFrame(()=>document.querySelector('.game-card').scrollIntoView({behavior:'auto',block:'start'}));
     for(let i=0;i<COUNT_IN+TOTAL_BEATS;i++) scheduleBeat(ctx,startAt+i*interval,i<COUNT_IN,i%4===0,state);
     buttons.forEach(button=>button.disabled=true);
     document.querySelector('.game-card').classList.add('is-playing');
@@ -268,10 +282,20 @@ function finishGame() {
   setPad('FINISH!','★','結果を見てみよう');
   $('tap-feedback').textContent='今回のリズムはどうだったかな？';
   game=null;
+  if(document.body.dataset.playFocus==='diagnosis')delete document.body.dataset.playFocus;
   renderResult(result,previousBest);
   window.dispatchEvent(new CustomEvent("rizupita:result",{detail:{result,rank:tierFor(result.score)[0],daily:current.daily}}));
   window.dispatchEvent(new CustomEvent("rizupita:analytics",{detail:{name:"diagnosis_complete",params:{tempo:result.bpm,score:result.score}}}));
   selectedRankingTempo=result.bpm;
+  if(![80,110,140].includes(result.bpm)){
+    let custom=document.querySelector('[data-rank-bpm-custom]');
+    if(!custom){
+      custom=document.createElement('button');custom.type='button';custom.setAttribute('data-rank-bpm-custom','true');
+      custom.addEventListener('click',()=>{selectedRankingTempo=Number(custom.dataset.rankBpm);renderLeaderboard();});
+      document.querySelector('[data-rank-bpm]').parentElement.append(custom);
+    }
+    custom.dataset.rankBpm=String(result.bpm);custom.textContent=result.bpm+' BPM';
+  }
   renderLeaderboard();
   renderHistory();
   $('result-card').hidden=false;
@@ -279,7 +303,7 @@ function finishGame() {
   $('result-card').classList.remove('is-celebrating');
   void $('result-card').offsetWidth;
   $('result-card').classList.add('is-celebrating');
-  $('result-card').scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'start'});
+  $('result-card').scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
 }
 function tierFor(score) {
   if(score>=90) return ['リズムマスター','すごい！ビートを見事にキャッチ。次はもっと速いテンポにも挑戦！'];
@@ -300,6 +324,15 @@ function renderResult(result,previousBest) {
   $('metric-hit').innerHTML=`${result.hits} <em>/16</em>`;
   const averageReading=resultAverageMeter.showAverage(result.meanSigned,result.meanAbs,result.bpm);
   $('result-average-note').textContent=averageReading.note;
+  const recommendation=recommendTraining(result);
+  $('recommend-title').textContent='次は「'+recommendation.label+'」がおすすめ';
+  $('recommend-reason').textContent=recommendation.reason;
+  $('recommend-start').dataset.mode=recommendation.mode;
+  $('recommend-start').dataset.bpm=String(recommendation.bpm);
+  const suggestion=calibrationHint(result,$('latency-slider').value);
+  $('calibration-hint').textContent=suggestion.message;
+  $('calibration-apply').disabled=!suggestion.enabled;
+  $('calibration-apply').dataset.value=String(suggestion.value);
   const container=$('timing-chart');
   container.replaceChildren();
   result.errors.forEach((error,i)=>{
@@ -334,19 +367,41 @@ async function shareResult() {
   try {await navigator.clipboard.writeText(`${text}\n${url}`);$('share-button').textContent='コピーしました ✓';setTimeout(()=>$('share-button').textContent='友だちに結果をシェア ↗',2000);}
   catch { $('share-button').textContent='Xに投稿ボタンをご利用ください'; }
 }
+function renderHistoryDetail(entry,records){
+  const container=$('history-detail');container.replaceChildren();
+  const title=document.createElement('strong');title.textContent=humanDate(entry.time)+' ／ '+entry.bpm+' BPM ／ '+entry.score+'点';
+  const summary=document.createElement('p');summary.textContent='平均ズレ：'+timeFormat(entry.meanAbs)+' ms ／ ヒット：'+(Number.isFinite(entry.hits)?entry.hits:'—')+'/16';
+  const comparison=compareAttempts(entry,records),delta=document.createElement('p');
+  delta.textContent=comparison?.previous?'直前の同じBPMと比較：'+(comparison.scoreDelta>=0?'+':'')+comparison.scoreDelta+' 点 ／ 平均ズレ '+(comparison.errorDelta===null?'比較なし':(comparison.errorDelta>0?'+':'')+comparison.errorDelta+' ms'):'このBPMでは最初の記録です。';
+  container.append(title,summary,delta);
+  if(Array.isArray(entry.errors)){
+    const list=document.createElement('div');list.className='history-beats';
+    entry.errors.slice(0,16).forEach((err,i)=>{
+      const chip=document.createElement('span');chip.className='history-beat'+(Number.isFinite(err)?'':' is-missed');
+      chip.textContent=(i+1)+'拍 '+(Number.isFinite(err)?(Math.round(err)>0?'+':'')+Math.round(err)+'ms':'ミス');
+      list.append(chip);
+    });container.append(list);
+  }
+  const close=document.createElement('button');close.className='button button-outline';close.type='button';close.textContent='閉じる';
+  close.addEventListener('click',()=>{container.hidden=true;});container.append(close);container.hidden=false;
+}
 function renderHistory() {
   const history=readHistory();
   const container=$('history-list');container.replaceChildren();
   if(!history.length) {const p=document.createElement('p');p.className='history-empty';p.textContent='最初の診断結果がここに表示されます。';container.appendChild(p);return;}
   const bests={}; for(const item of history) bests[item.bpm]=Math.max(bests[item.bpm]??-1,item.score);
-  for(const item of history.slice(0,6)) {
+  for(const item of history.slice(0,10)) {
     const row=document.createElement('div');row.className='history-row';
     const info=document.createElement('span');info.className='history-tempo';info.textContent=`${item.bpm} BPM`;
     const detail=document.createElement('span');detail.className='history-date';detail.textContent=humanDate(item.time);
     const score=document.createElement('strong');score.textContent=`${item.score} 点`;
     const left=document.createElement('div');left.className='history-meta';left.append(info,detail);
     if(bests[item.bpm]===item.score) {const trophy=document.createElement('span');trophy.className='history-best';trophy.textContent='BEST';left.append(trophy);}
-    row.append(left,score);container.appendChild(row);
+    const detailButton=document.createElement('button');detailButton.type='button';
+    detailButton.className='history-open';detailButton.textContent='詳細・比較 ↗';
+    detailButton.setAttribute('aria-label',humanDate(item.time)+' '+item.bpm+' BPM '+item.score+'点の詳細を開く');
+    detailButton.addEventListener('click',()=>renderHistoryDetail(item,history));
+    row.append(left,score,detailButton);container.appendChild(row);
   }
 }
 
@@ -410,6 +465,19 @@ window.addEventListener('rizupita:daily-start',event=>{
   resetInterface();
   setDifficulty(challenge.bpm);
   startGame({daily:{day:challenge.day,target:challenge.target}});
+});
+$('recommend-start').addEventListener('click',()=>{
+  const button=$('recommend-start');
+  window.dispatchEvent(new CustomEvent('rizupita:recommend-mode',{detail:{mode:button.dataset.mode,bpm:Number(button.dataset.bpm)}}));
+  $('modes').scrollIntoView({behavior:'smooth',block:'start'});
+});
+$('calibration-apply').addEventListener('click',()=>{
+  const value=Number($('calibration-apply').dataset.value);
+  if(!Number.isFinite(value)||value< -150||value>150)return;
+  $('latency-slider').value=String(value);
+  $('latency-slider').dispatchEvent(new Event('input',{bubbles:true}));
+  $('calibration-hint').textContent='補正を '+(value>=0?'+':'')+value+' ms に変更しました。同じ端末で再診断して比べてください。';
+  $('calibration-apply').disabled=true;
 });
 startButton.addEventListener('click',startGame);
 resetButton.addEventListener('click',resetInterface);
