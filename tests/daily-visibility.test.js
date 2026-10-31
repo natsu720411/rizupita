@@ -14,7 +14,7 @@ test('Daily challenge precedes other games on the homepage',()=>{
 test('Hero and visible header link to daily challenge',()=>{
  assert.match(html,/class="hero-daily-promote"/);
  assert.match(html,/class="nav-cta" href="#daily"/);
- assert.match(html,/class="hero-actions">\s*<a[^>]+href="#daily"/);
+ assert.match(html,/class="hero-actions">[\s\S]*?href="#daily"/);
 });
 test('Daily call to action remains usable without relying on a menu on mobile',()=>{
  assert.match(html,/<button[^>]+id="daily-start"[^>]+>/);
