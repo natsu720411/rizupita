@@ -198,14 +198,15 @@
 
 <section class="modes-section" id="modes" aria-labelledby="modes-title">
   <div class="container">
-    <div class="section-head"><div class="section-kicker">MORE RHYTHM GAMES</div><h2 id="modes-title">遊びながら、リズム感を磨こう。</h2><p>診断のあとも練習できる4つのモード。全部無料でプレイできます。</p></div>
+    <div class="section-head"><div class="section-kicker">MORE RHYTHM GAMES</div><h2 id="modes-title">遊びながら、リズム感を磨こう。</h2><p>診断のあとも練習できる5つのモード。全部無料でプレイできます。</p></div>
     <div class="modes-grid" role="group" aria-label="練習ゲームを選ぶ">
       <button class="mode-card is-chosen" type="button" data-mode="practice" aria-pressed="true"><span class="mode-icon">♫</span><strong>メトロノーム練習</strong><small>24拍でタイミングを身につける</small></button>
       <button class="mode-card" type="button" data-mode="offbeat" aria-pressed="false"><span class="mode-icon">♬</span><strong>裏拍チャレンジ</strong><small>音と音の真ん中を狙う</small></button>
       <button class="mode-card" type="button" data-mode="silence" aria-pressed="false"><span class="mode-icon">◌</span><strong>無音テンポキープ</strong><small>音が消えてもリズムを保つ</small></button>
       <button class="mode-card" type="button" data-mode="memory" aria-pressed="false"><span class="mode-icon">✧</span><strong>リズム記憶</strong><small>聴いたパターンを再現する</small></button>
+      <button class="mode-card" type="button" data-mode="switchbeat" aria-pressed="false"><span class="mode-icon">↔</span><strong>表拍・裏拍スイッチ</strong><small>音と中間を交互にタップ</small></button>
     </div>
-<nav class="game-guide-links" aria-label="ゲームごとの遊び方"><span>遊び方を詳しく見る：</span><a href="/guide/offbeat.html">裏拍チャレンジのコツ ↗</a><a href="/guide/silence.html">無音テンポのコツ ↗</a><a href="/guide/memory.html">リズム記憶のコツ ↗</a></nav>
+<nav class="game-guide-links" aria-label="ゲームごとの遊び方"><span>遊び方を詳しく見る：</span><a href="/guide/offbeat.html">裏拍チャレンジのコツ ↗</a><a href="/guide/silence.html">無音テンポのコツ ↗</a><a href="/guide/memory.html">リズム記憶のコツ ↗</a><a href="/guide/switchbeat.html">表拍・裏拍スイッチのコツ ↗</a></nav>
     <div class="mode-player" id="mode-player">
       <div class="mode-player-header"><div><span class="mini-label">RHYTHM TRAINING</span><h3 id="mode-title">メトロノーム練習</h3><p id="mode-description">音に合わせて24拍タップしてみよう。</p></div><label class="mode-bpm-label" for="mode-bpm">テンポ <select id="mode-bpm"><option value="80">80 BPM</option><option value="110" selected>110 BPM</option><option value="140">140 BPM</option></select></label></div>
       <div class="custom-tempo mode-custom-tempo"><label for="mode-custom-bpm">ゲームの自由BPM</label><input id="mode-custom-bpm" type="number" min="60" max="180" value="120" step="1" inputmode="numeric" />
