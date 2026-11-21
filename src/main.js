@@ -163,6 +163,12 @@ async function startGame({daily=null}={}) {
     }
     await audioContext.resume();
     if(token!==runToken) return;
+    // A backgrounded tab must not start a timing-sensitive game.
+    if(document.hidden){
+      resetInterface();
+      setStatus('一時中断','画面を切り替えたため診断を中止しました。再度スタートしてください。');
+      return;
+    }
     const ctx=audioContext;
     const interval=60/bpm;
     const startAt=ctx.currentTime+.25;
@@ -453,7 +459,7 @@ window.addEventListener('rizupita:begin',event=>{
   if(event.detail?.source!=='diagnosis' && (game || startButton.disabled))resetInterface();
 });
 document.addEventListener('visibilitychange',()=>{
-  if(document.hidden && game){
+  if(document.hidden && (game || startButton.disabled)){
     resetInterface();
     setStatus('一時中断','画面を切り替えたため診断を中止しました。再度スタートしてください。');
   }
