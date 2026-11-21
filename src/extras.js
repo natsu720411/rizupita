@@ -29,7 +29,8 @@ const specs={
  practice:{title:'メトロノーム練習',desc:'音に合わせて24拍タップ。ズレを見ながら繰り返し練習しよう。',help:'カウント後、24回の音に合わせてタップ！'},
  offbeat:{title:'裏拍チャレンジ',desc:'16回鳴るメトロノームの「ちょうど真ん中」を狙ってタップ。',help:'音と次の音の間を狙ってタップ！'},
  silence:{title:'無音テンポキープ',desc:'最初の8拍は音が鳴るけれど、後半8拍は無音。自分のテンポを試そう。',help:'8拍目のあと音が消えても、そのままタップ！'},
- memory:{title:'リズム記憶',desc:'8拍のフレーズを聴いて覚え、次の8拍で同じ場所だけをタップ。',help:'お手本を聴いて、後半8拍でパターンを再現！'}
+ memory:{title:'リズム記憶',desc:'8拍のフレーズを聴いて覚え、次の8拍で同じ場所だけをタップ。',help:'お手本を聴いて、後半8拍でパターンを再現！'},
+ switchbeat:{title:'表拍・裏拍スイッチ',desc:'奇数拍は音に合わせ、偶数拍は音と音の中間を狙う16拍ゲーム。',help:'1・3・5…は音と一緒、2・4・6…は音と音の間！'}
 };
 const modeButtons=[...document.querySelectorAll('[data-mode]')];
 const modeTap=byId('mode-pad'),modeStart=byId('mode-start'),modeStop=byId('mode-stop');
@@ -145,6 +146,7 @@ async function beginMode(){
     if(!context||context.state==='closed')context=new Context();
     await context.resume();
     if(localToken!==token)return;
+    if(document.hidden){stopMode();announce('画面を切り替えたため中止しました。');return;}
     const interval=60/bpm,at=context.currentTime+.3;
     const start=at+COUNT_IN*interval;
     const nodes=[];
@@ -163,7 +165,7 @@ async function beginMode(){
       const length=currentMode==='practice'?24:16;
       for(let i=0;i<length;i++){
         if(currentMode!=='silence'||i<8)playTone(context,start+i*interval,i%4===0?900:650,.16,nodes);
-        targets.push({time:start+(i+(currentMode==='offbeat'?.5:0))*interval,hit:null,index:i+1});
+        targets.push({time:start+(i+(currentMode==='offbeat'?.5:currentMode==='switchbeat'&&i%2===1?.5:0))*interval,hit:null,index:i+1});
       }
       end=start+length*interval+.18;
     }
@@ -203,6 +205,7 @@ function frame(){
     label=i+' / '+length+' 拍';
     if(state.mode==='silence'&&i>8)announce('ここから無音！テンポをキープしよう。');
     else if(state.mode==='offbeat')announce('音と音の中間を狙おう！');
+    else if(state.mode==='switchbeat')announce(i%2===1?'表拍：音と同時に！':'裏拍：音と音の間を狙おう！');
     else announce('音のタイミングに合わせてタップ！');
   }
   if(label!==state.lastProgress){state.lastProgress=label;byId('mode-progress').textContent=label;}
@@ -276,7 +279,7 @@ window.addEventListener('rizupita:begin',event=>{
   if(event.detail?.source!=='mode' && (state || modeStart.disabled))stopMode(true);
 });
 document.addEventListener('visibilitychange',()=>{
-  if(document.hidden&&state){stopMode();byId('mode-result').textContent='画面を切り替えたため中止しました。';}
+  if(document.hidden&&(state||modeStart.disabled)){stopMode();byId('mode-result').textContent='画面を切り替えたため中止しました。';}
 });
 
 async function shareModeResult() {
